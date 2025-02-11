@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator zarobków</title>
+</head>
+<body>
+    <h1>Kalkulator zarobków</h1>
+    
+    <label for="godziny">Godziny pracy:</label>
+    <input type="number" id="godziny" placeholder="Godziny pracy" step="0.01">
+    <br>
+
+    <label for="zamowienia">Ilość zamówień:</label>
+    <input type="number" id="zamowienia" placeholder="Ilość zamówień" step="1">
+    <br>
+
+    <label for="napiwki">Napiwki:</label>
+    <input type="number" id="napiwki" placeholder="Napiwki" step="0.01">
+    <br>
+
+    <label for="paliwo">Paliwo:</label>
+    <input type="number" id="paliwo" placeholder="Paliwo" step="0.01">
+    <br>
+
+    <label for="parking">Parking:</label>
+    <input type="number" id="parking" placeholder="Parking" step="0.01">
+    <br>
+
+    <label for="jedzenie">Jedzenie:</label>
+    <input type="number" id="jedzenie" placeholder="Jedzenie" step="0.01">
+    <br>
+
+    <button onclick="calculate()">Oblicz</button>
+
+    <h2>Wyniki:</h2>
+    <p id="wynagrodzenie">Wynagrodzenie za godziny: </p>
+    <p id="bonusy">Za zamówienia: </p>
+    <p id="sumZarobkow">Suma zarobków Brutto: </p>
+    <p id="netto">Netto (po opodatkowaniu): </p>
+	<p id="sumWydatkow">Suma wydatków: </p>
+    <p id="laczenie">Łącznie (Netto - wydatki): </p>
+
+    <script src="script.js"></script>
+</body>
+</html>
