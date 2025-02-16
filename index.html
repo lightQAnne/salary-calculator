@@ -3,44 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator zarobków</title>
+    <title>Obliczanie wynagrodzenia</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Kalkulator zarobków</h1>
-    
-    <label for="godziny">Godziny pracy:</label>
-    <input type="number" id="godziny" placeholder="Godziny pracy" step="0.01">
-    <br>
-
-    <label for="zamowienia">Ilość zamówień:</label>
-    <input type="number" id="zamowienia" placeholder="Ilość zamówień" step="1">
-    <br>
-
-    <label for="napiwki">Napiwki:</label>
-    <input type="number" id="napiwki" placeholder="Napiwki" step="0.01">
-    <br>
-
-    <label for="paliwo">Paliwo:</label>
-    <input type="number" id="paliwo" placeholder="Paliwo" step="0.01">
-    <br>
-
-    <label for="parking">Parking:</label>
-    <input type="number" id="parking" placeholder="Parking" step="0.01">
-    <br>
-
-    <label for="jedzenie">Jedzenie:</label>
-    <input type="number" id="jedzenie" placeholder="Jedzenie" step="0.01">
-    <br>
-
-    <button onclick="calculate()">Oblicz</button>
-
-    <h2>Wyniki:</h2>
-    <p id="wynagrodzenie">Wynagrodzenie za godziny: </p>
-    <p id="bonusy">Za zamówienia: </p>
-    <p id="sumZarobkow">Suma zarobków Brutto: </p>
-    <p id="netto">Netto (po opodatkowaniu): </p>
-	<p id="sumWydatkow">Suma wydatków: </p>
-    <p id="laczenie">Łącznie (Netto - wydatki): </p>
+    <div class="container">
+        <div class="section zarobki">
+            <h3>Zarobki</h3>
+            <div class="input-group">Stawka za godzinę: <input type="number" id="stawka_godz" value="30.50"></div>
+            <div class="input-group">Stawka za zamówienie: <input type="number" id="stawka_zam" value="5.50"></div>
+            <div class="input-group">Godziny pracy: <input type="number" id="godziny" value="0"></div>
+            <div class="input-group">Ilość zamówień: <input type="number" id="zamowienia" value="0"></div>
+            <div class="input-group">Napiwki: <input type="number" id="napiwki" value="0"></div>
+        </div>
+        <div class="section wydatki">
+            <h3>Wydatki</h3>
+            <div class="input-group">Paliwo: <input type="number" id="paliwo" value="0"></div>
+            <div class="input-group">Parking: <input type="number" id="parking" value="0"></div>
+            <div class="input-group">Jedzenie: <input type="number" id="jedzenie" value="0"></div>
+        </div>
+        <div class="section sum">
+            <p>Wynagrodzenie za godziny: <span id="wynagrodzenie_godziny">0</span></p>
+            <p>Za zamówienia: <span id="za_zamowienia">0</span></p>
+            <p>Suma brutto: <span id="suma_brutto">0</span></p>
+            <p>Suma netto: <span id="suma_netto">0</span></p>
+            <p>Suma wydatków: <span id="suma_wydatkow">0</span></p>
+            <h3>Łącznie: <span id="laczenie">0</span></h3>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

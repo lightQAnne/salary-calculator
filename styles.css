@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 350px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.zarobki, .wydatki, .sum {
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.zarobki {
+    background-color: #ffde59;
+}
+
+.wydatki {
+    background-color: #ff6b6b;
+}
+
+.sum {
+    background-color: #74c69d;
+    font-weight: bold;
+}
+
+.zarobki h3, .wydatki h3 {
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.input-group {
+    margin: 5px 0;
+}
+
+.input-group input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    width: 80px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
