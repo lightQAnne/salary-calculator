@@ -9,22 +9,22 @@ body {
 
 .container {
     width: 350px;
-    padding: 20px;
+    padding: 30px;
     background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 .section {
     padding: 10px;
     margin-bottom: 8px;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-	transition: transform 0.2s ease-in-out; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	transition: transform 0.2s ease-in-out;
 }
 
 .section:hover {
-    transform: scale(1.03); 
+    transform: scale(1.02); 
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
@@ -38,23 +38,23 @@ body {
 }
 
 .expenses {
-    background-color: #FFC0CB;
+    background-color: #F8D7DA;
 }
 
 .sum {
-    background-color: #C8E6C9;
+    background-color: #E8F5E9;
 }
 
 .income h3, .expenses h3 {
-    border-bottom: 2px solid black;
+    border-bottom: 1px solid black;
     padding-bottom: 5px;
     text-align: center;
-    width: 50%;
+    width: 75%;
     margin: 0 auto;
 }
 
 .input-group {
-    margin: 5px 0;
+    margin: 7px 0;
 }
 
 .input-group input {
@@ -67,7 +67,7 @@ body {
 }
 
 #saveButton {
-    background-color: orange;
+    background-color: #00897B;
     color: white;
     width: 50px;
     height: 50px;
@@ -78,23 +78,30 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    margin-left: auto;
+    position: relative; 
+    margin-left: auto; 
     margin-top: 10px;
+	margin-right: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s, transform 0.2s;
 }
 
 #saveButton:hover {
-    background-color: #ffb347; 
+    background-color: #3CB371;
 	transform: scale(1.05);
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 #saveButton:active {
-    transform: scale(0.9);
+    transform: scale(0.9); /* Лёгкий эффект нажатия */
 }
 
 #saveButton i {
     font-size: 22px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
