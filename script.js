@@ -1,30 +1,31 @@
-function calculate() {
-    // Pobieramy wartości z pól input i zabezpieczamy przed ujemnymi liczbami
-    let godzinyPracy = parseFloat(document.getElementById("godziny").value.replace(',', '.')) || 0;
-    let zamowienia = Math.max(parseFloat(document.getElementById("zamowienia").value) || 0, 0);
-    let napiwki = Math.max(parseFloat(document.getElementById("napiwki").value) || 0, 0);
-    let stawkaGodzinowa = parseFloat(document.getElementById("stawka_godz").value) || 30.50;
-    let stawkaZamowienia = parseFloat(document.getElementById("stawka_zam").value) || 5.50;
-	let paliwo = Math.max(parseFloat(document.getElementById("paliwo").value) || 0, 0);
-    let parking = Math.max(parseFloat(document.getElementById("parking").value) || 0, 0);
-    let jedzenie = Math.max(parseFloat(document.getElementById("jedzenie").value) || 0, 0);
+function calculate() 
+{
+	let workingHours = parseFloat(document.getElementById("working_hours").value.replace(',', '.')) || 0;
+	let orderCount = Math.max(parseFloat(document.getElementById("orders_count").value) || 0, 0);
+	let tips = Math.max(parseFloat(document.getElementById("tips").value) || 0, 0);
+	let hourlyRate = parseFloat(document.getElementById("hourly_rate").value) || 30.50;
+	let orderRate = parseFloat(document.getElementById("order_rate").value) || 5.50;
+	let kmPerDay = Math.max(parseFloat(document.getElementById("km_per_day").value) || 0, 0);
+	let parking = Math.max(parseFloat(document.getElementById("parking").value) || 0, 0);
+	let foodExpenses = Math.max(parseFloat(document.getElementById("food_expenses").value) || 0, 0);
 
-    // Obliczenia
-    let wynagrodzenieZaGodziny = godzinyPracy * stawkaGodzinowa;
-    let zaZamowienia = zamowienia * stawkaZamowienia;
-    let sumaZarobkow = wynagrodzenieZaGodziny + napiwki + zaZamowienia;
-    let skladkaZdrowotna = sumaZarobkow * 0.09; // Składka zdrowotna (9%)
-    let sumaNetto = sumaZarobkow - skladkaZdrowotna; // Wynagrodzenie netto po odliczeniu składki zdrowotnej
-    let sumaWydatkow = paliwo + parking + jedzenie;
-    let lacznie = sumaNetto - sumaWydatkow;
+	let earningsFromHours = workingHours * hourlyRate;
+	let grossOrderEarnings = orderCount * orderRate;
+	let netOrderEarnings = grossOrderEarnings * 0.91; // 9% health insurance deduction
+	let costPerKm = kmPerDay * 0.42;
+	let carIncome = netOrderEarnings - costPerKm;
+	let totalGrossEarnings = earningsFromHours + tips + grossOrderEarnings;
+	let healthInsurance = totalGrossEarnings * 0.09; // 9% health insurance deduction
+	let totalNetEarnings = totalGrossEarnings - healthInsurance;
+	let totalExpenses = parking + foodExpenses;
+	let finalAmount = totalNetEarnings - totalExpenses;
 
-    // Wyświetlanie wyników
-    document.getElementById("wynagrodzenie_godziny").innerText = wynagrodzenieZaGodziny.toFixed(2) + " PLN";
-    document.getElementById("za_zamowienia").innerText = zaZamowienia.toFixed(2) + " PLN";
-    document.getElementById("suma_brutto").innerText = sumaZarobkow.toFixed(2) + " PLN";
-    document.getElementById("suma_netto").innerText = sumaNetto.toFixed(2) + " PLN";
-    document.getElementById("suma_wydatkow").innerText = sumaWydatkow.toFixed(2) + " PLN";
-    document.getElementById("laczenie").innerText = lacznie.toFixed(2) + " PLN";
+	document.getElementById("hourly_wage").innerText = earningsFromHours.toFixed(2) + " PLN";
+	document.getElementById("gross_order_earnings").innerText = grossOrderEarnings.toFixed(2) + " PLN";
+	document.getElementById("total_gross").innerText = totalGrossEarnings.toFixed(2) + " PLN";
+	document.getElementById("total_net").innerText = totalNetEarnings.toFixed(2) + " PLN";
+	document.getElementById("total_expenses").innerText = totalExpenses.toFixed(2) + " PLN";
+	document.getElementById("final_amount").innerText = finalAmount.toFixed(2) + " PLN";
 }
 
- document.addEventListener("input", calculate);
+	document.addEventListener("input", calculate);
