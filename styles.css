@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #8FBC8F;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,27 +20,32 @@ body {
     margin-bottom: 8px;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	transition: transform 0.2s ease-in-out; 
 }
 
-.zarobki, .wydatki, .sum {
+.section:hover {
+    transform: scale(1.03); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.income, .expenses, .sum {
     padding: 10px;
     border-radius: 20px;
 }
 
-.zarobki {
-    background-color: #ffde59;
+.income {
+    background-color: #FFF4D6;
 }
 
-.wydatki {
-    background-color: #ff6b6b;
+.expenses {
+    background-color: #FFC0CB;
 }
 
 .sum {
-    background-color: #74c69d;
-    font-weight: bold;
+    background-color: #C8E6C9;
 }
 
-.zarobki h3, .wydatki h3 {
+.income h3, .expenses h3 {
     border-bottom: 2px solid black;
     padding-bottom: 5px;
     text-align: center;
@@ -54,19 +59,42 @@ body {
 
 .input-group input {
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 15px;
     padding: 5px;
-    width: 80px;
+    width: 70px;
     text-align: center;
     box-sizing: border-box;
 }
 
-button {
-    background-color: #ff8c00;
+#saveButton {
+    background-color: orange;
     color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     border: none;
-    padding: 10px;
-    border-radius: 5px;
     cursor: pointer;
-    width: 100%;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-left: auto;
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#saveButton:hover {
+    background-color: #ffb347; 
+	transform: scale(1.05);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#saveButton:active {
+    transform: scale(0.9);
+}
+
+#saveButton i {
+    font-size: 22px;
 }
