@@ -1,6 +1,6 @@
 function calculate() 
 {
-	let workingHours = parseFloat(document.getElementById("working_hours").value.replace(',', '.')) || 0;
+	let workingHours = Math.max(parseFloat(document.getElementById("working_hours").value.replace(',', '.')) || 0, 0);
 	let orderCount = Math.max(parseFloat(document.getElementById("orders_count").value) || 0, 0);
 	let tips = Math.max(parseFloat(document.getElementById("tips").value) || 0, 0);
 	let hourlyRate = parseFloat(document.getElementById("hourly_rate").value) || 30.50;
