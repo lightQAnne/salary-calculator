@@ -17,11 +17,12 @@ function calculate()
 	let totalGrossEarnings = earningsFromHours + tips + grossOrderEarnings;
 	let healthInsurance = totalGrossEarnings * 0.09; // 9% health insurance deduction
 	let totalNetEarnings = totalGrossEarnings - healthInsurance;
-	let totalExpenses = parking + foodExpenses;
+	let totalExpenses = parking + foodExpenses + costPerKm;
 	let finalAmount = totalNetEarnings - totalExpenses;
 
 	document.getElementById("hourly_wage").innerText = earningsFromHours.toFixed(2) + " PLN";
 	document.getElementById("gross_order_earnings").innerText = grossOrderEarnings.toFixed(2) + " PLN";
+	document.getElementById("car_income").innerText = carIncome.toFixed(2) + " PLN";
 	document.getElementById("total_gross").innerText = totalGrossEarnings.toFixed(2) + " PLN";
 	document.getElementById("total_net").innerText = totalNetEarnings.toFixed(2) + " PLN";
 	document.getElementById("total_expenses").innerText = totalExpenses.toFixed(2) + " PLN";

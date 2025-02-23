@@ -9,62 +9,49 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="section income">
-            <h3>Income</h3>
-			
-            <div class="input-group">
-				<input type="number" id="hourly_rate" value="30.50"> hourly rate
-			</div>
-			
-            <div class="input-group">
-				<input type="number" id="order_rate" value="5.50"> order rate
-			</div>
-			
-            <div class="input-group">
-				<input type="number" id="working_hours" value="0"> working hours
-			</div>
-			
-            <div class="input-group">
-				<input type="number" id="orders_count" value="0"> number of orders
-			</div>
-			
-            <div class="input-group">
-				<input type="number" id="tips" value="0"> tips
-			</div>
-        </div>
+<div class="container">
+	<div class="section income">
+		<h3>Income</h3>
+		<div class="input-group">
+			<input type="number" id="hourly_rate" value="30.50"> hourly rate </div>
+		<div class="input-group">
+			<input type="number" id="order_rate" value="5.50"> order rate </div>
+		<div class="input-group">
+			<input type="number" id="working_hours" placeholder="hours"> working hours </div>
+		<div class="input-group">
+			<input type="number" id="orders_count" placeholder="orders"> number of orders </div>
+		<div class="input-group">
+			<input type="number" id="tips" placeholder="zl"> tips </div>
+	</div>
 		
         <div class="section expenses">
-            <h3>Expenses</h3>
-            <div class="input-group">
-				<input type="number" id="km_per_day" value="0"> daily kilometers
-			</div>
-			
-            <div class="input-group">
-				<input type="number" id="parking" value="0"> parking
-			</div>
-			
-            <div class="input-group">
-				<input type="number" id="food_expenses" value="0"> food expenses
-			</div>
+		<h3>Expenses</h3>
+		<div class="input-group">
+				<input type="number" id="km_per_day" placeholder="km"> daily kilometers </div>
+		<div class="input-group">
+				<input type="number" id="parking" placeholder="zl"> parking </div>
+		<div class="input-group">
+				<input type="number" id="food_expenses" placeholder="zl"> food expenses </div>
         </div>
 		
         <div class="section sum">
-            <p>Hourly wage: <span id="hourly_wage">0</span></p>
-            <p>Payment per order: <span id="gross_order_earnings">0</span></p>
-			<p>Total expenses: <span id="total_expenses">0</span></p>
-            <p>Gross amount: <span id="total_gross">0</span></p>
-            <p>Net amount: <span id="total_net">0</span></p>
-            <h3>Final amount: <span id="final_amount">0</span></h3>
+		<p>Hourly wage: <span id="hourly_wage">0</span></p>
+		<p>Payment per order: <span id="gross_order_earnings">0</span></p>
+		<p>Car income: <span id="car_income">0</span></p>
+		<p>Total expenses: <span id="total_expenses">0</span></p>
+		<p>Gross amount: <span id="total_gross">0</span></p>
+		<p>Net amount: <span id="total_net">0</span></p>
+		<h3>Final amount: <span id="final_amount">0</span></h3>
         </div>
 		
-		<button id="saveButton" title="Save">
-			<i class="fa-solid fa-floppy-disk"></i>
-		</button>
-
-    </div>
+	<button id="saveButton" title="Save">
+		<i class="fa-solid fa-floppy-disk"></i>
+	</button>
+		
+</div>
 
     <script src="script.js"></script>
+	
 </body>
 
 </html>
