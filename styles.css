@@ -17,7 +17,7 @@ body {
 
 .section {
     padding: 10px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     border-radius: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 	transition: transform 0.2s ease-in-out;
@@ -66,6 +66,13 @@ body {
     box-sizing: border-box;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button 
+{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 #saveButton {
     background-color: #00897B;
     color: white;
@@ -78,16 +85,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative; 
     margin-left: auto; 
-    margin-top: 10px;
-	margin-right: 10px;
+    margin-top: -50px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s, transform 0.2s;
 }
 
 #saveButton:hover {
-    background-color: #3CB371;
+    background-color: #20B2AA;
 	transform: scale(1.05);
 	box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
@@ -97,11 +102,5 @@ body {
 }
 
 #saveButton i {
-    font-size: 22px;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+    font-size: 25px;
 }
