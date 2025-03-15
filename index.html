@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculation of wages</title>
-    <link rel="stylesheet" href="styles.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Calculation of wages</title>
+	<link rel="stylesheet" href="styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>	
 </head>
 
 <body>
@@ -33,11 +36,18 @@
 			<span class="input-description">tips</span>
 		</div>
 		<div class="result_income">	
-			<p>Hourly wage: <span id="hourly_wage">0</span></p>
-			<p>Payment per order: <span id="gross_order_earnings">0</span></p>
-			<p>Payment per order (net): <span id="net_order_earnings">0</span></p>
-			<p>Gross amount: <span id="total_gross">0</span></p>
-			<p class="main_result">Net amount: <span id="total_net">0</span></p>
+			<div class="flip-card">
+				<div class="flip-card-inner">
+					<div class="flip-card-front">
+						<p>Payment per order: <span id="gross_order_earnings">0</span></p>
+						<p class="main_result">Gross amount: <span id="total_gross">0</span></p>
+					</div>
+					<div class="flip-card-back">
+						<p>Payment per order: <span id="net_order_earnings">0</span></p>
+						<p class="main_result">Net amount: <span id="total_net">0</span></p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 		
@@ -68,8 +78,8 @@
 	</div>	
 </div>
 
+<script src="firebase-config.js"></script>
 <script src="script.js"></script>
 	
 </body>
-
 </html>
