@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+//get all the elements of the form
     const hourlyRateInput = document.getElementById("hourly_rate");
     const orderRateInput = document.getElementById("order_rate");
     const workingHoursInput = document.getElementById("working_hours");
@@ -8,15 +9,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const parkingInput = document.getElementById("parking");
     const saveButton = document.getElementById("saveButton");
 
+//input validation
 function validateNumericInput(event) {
     const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", ".", ","];
-    if (!/[0-9]/.test(event.key) && !allowedKeys.includes(event.key)) {
-        event.preventDefault();
-    }
- }
+	if (!/[0-9]/.test(event.key) && !allowedKeys.includes(event.key)) {
+		event.preventDefault();
+	}
+}
 
 [workingHoursInput, ordersCountInput, tipsInput, kmPerDayInput, parkingInput].forEach(input => {
-        input.addEventListener("keypress", validateNumericInput);
+    input.addEventListener("keypress", validateNumericInput);
 });
 
 function calculate() {
@@ -30,7 +32,7 @@ function calculate() {
 
     const earningsFromHours = workingHours * hourlyRate;
     const grossOrderEarnings = orderCount * orderRate;
-    const totalGrossEarnings = earningsFromHours + tips + grossOrderEarnings;
+    const totalGrossEarnings = earningsFromHours + grossOrderEarnings + tips;
 
     const totalNetEarnings = calculateNetEarnings(totalGrossEarnings);
     const netOrderEarnings = calculateNetEarnings(grossOrderEarnings);
@@ -40,15 +42,14 @@ function calculate() {
     const totalExpenses = parking + fuelCost;
     const finalAmount = totalNetEarnings - totalExpenses;
 
-    document.getElementById("hourly_wage").innerText = earningsFromHours.toFixed(2) + " PLN";
     document.getElementById("gross_order_earnings").innerText = grossOrderEarnings.toFixed(2) + " PLN";
+	document.getElementById("net_order_earnings").innerText = netOrderEarnings.toFixed(2) + " PLN";
     document.getElementById("fuel_cost").innerText = fuelCost.toFixed(2) + " PLN";
     document.getElementById("car_income").innerText = carIncome.toFixed(2) + " PLN";
     document.getElementById("total_gross").innerText = totalGrossEarnings.toFixed(2) + " PLN";
     document.getElementById("total_net").innerText = totalNetEarnings.toFixed(2) + " PLN";
     document.getElementById("total_expenses").innerText = totalExpenses.toFixed(2) + " PLN";
     document.getElementById("final_amount").innerText = finalAmount.toFixed(2) + " PLN";
-    document.getElementById("net_order_earnings").innerText = netOrderEarnings.toFixed(2) + " PLN";
 }
 
 function calculateNetEarnings(grossEarnings) {
@@ -63,3 +64,66 @@ function calculateNetEarnings(grossEarnings) {
 }
 
 document.addEventListener("input", calculate);
+	calculate();
+
+// 	Firebase
+    async function saveDayData() {
+        if (!window.db) {
+            console.error("❌ Firebase not initialized!");
+            alert("Error saving data to Firebase.");
+            return;
+        }
+        
+        const today = new Date().getDate().toString();
+        const dayData = {
+            orders: parseFloat(ordersCountInput.value) || 0,
+            tips: parseFloat(tipsInput.value) || 0,
+            carIncome: parseFloat(document.getElementById("car_income").innerText) || 0,
+            finalAmount: parseFloat(document.getElementById("final_amount").innerText) || 0
+        };
+        
+        try {
+            await window.db.collection("monthData").doc(today).set(dayData);
+            alert(`✅ Data for day ${today} saved successfully!`);
+        } catch (error) {
+            console.error("❌ Error saving data to Firebase:", error);
+            alert("Error saving data to Firebase.");
+        }
+    }
+
+	saveButton.addEventListener("click", saveDayData);
+
+    async function loadMonthData() {
+        try {
+            const snapshot = await db.collection("monthData").get();
+            snapshot.forEach((doc) => {
+                console.log(`Day ${doc.id}:`, doc.data());
+            });
+        } catch (error) {
+            console.error("Error loading data:", error);
+        }
+    }
+	
+	loadMonthData();
+	
+// Flip Card
+    const flipCard = document.querySelector(".flip-card");
+
+    if (flipCard) {
+        // Flip on click
+        flipCard.addEventListener("click", () => {
+            flipCard.classList.toggle("flipped");
+        });
+
+        // Micro-animation of tilt once every 5 seconds
+        setInterval(() => {
+            if (!flipCard.classList.contains("flipped")) { 
+                flipCard.classList.add("hinting");
+
+                setTimeout(() => {
+                    flipCard.classList.remove("hinting");
+                }, 500);
+            }
+        }, 8000);
+    }
+});
