@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Month Summary</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>	
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2 class="page-title" id="page-title">Month Overview</h2>
+        </div>
+        
+        <!-- 🔽 drop-down -->
+        <div class="calendar-header">
+            <select id="monthSelector"></select>
+        </div>
+    
+        <!-- 📅 calendar -->
+        <div class="calendar-container">
+            <table class="calendar-table">
+                <thead>
+                    <tr>
+                        <th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th>
+                    </tr>
+                </thead>
+                <tbody id="calendar-body">
+                    <!-- JS generates days -->
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- 📊 results of the month -->
+        <div class="section summary_box">
+            <h3>📊 Month Summary</h3>
+            <p>Working hours: <span id="total_working_hours">0 h</span></p>
+            <p>Number of orders: <span id="total_orders">0</span></p>
+        </div>
+        <div class="section car_box">
+            <h3>🚗 Car Summary</h3>
+            <p>Fuel cost: <span id="total_fuel_cost">0 PLN</span></p>
+            <p>Car income: <span id="total_car_income">0 PLN</span></p>
+            <p>Kilometers: <span id="total_km">0 km</span></p>
+        </div>
+        <div>
+            <p class="main_result">💵 Income: <span id="total_final">0 PLN</span></p>
+        </div>
+    
+    </div>    
+
+    <script src="firebase-config.js"></script>
+    <script src="calendar.js"></script>
+    <script src="month-summary.js"></script>
+</body>
+</html>
