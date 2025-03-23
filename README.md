@@ -18,7 +18,7 @@ Feel free to check it out, and I would appreciate any feedback or suggestions fo
 
 ## How to Use
 1. Clone the repository.
-2. Open the `index.html` in your browser.
+2. Open the `day.html` in your browser.
 3. Enter the number of hours worked and the hourly rate to calculate the salary.
 
 ## License
