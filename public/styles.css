@@ -1,0 +1,396 @@
+/* ==============================
+   GLOBAL STYLES
+   ============================== */
+   
+body {
+    font-family: Arial, sans-serif;
+    background-color: #A2D5A2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+/* ==============================
+   CONTAINER STYLES
+   ============================== */
+   
+.container {
+    width: 360px;
+    padding: 20px;
+    background: white;
+    border-radius: 25px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ==============================
+   SECTION STYLES (Income, Expenses, Sum)
+   ============================== */
+   
+.section {
+    padding: 25px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+	transition: transform 0.2s ease-in-out;
+}
+
+.section:hover {
+    transform: scale(1.02); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.income {
+    background-color: #FFF4D6;
+}
+
+.expenses {
+    background-color: #F8D7DA;
+}
+
+.sum {
+    background-color: #E8F5E9;
+}
+
+/* ==============================
+   TITLE STYLES
+   ============================== */
+
+h3 {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    flex: 1;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+
+/* ==============================
+   FORM STYLES (Input Groups)
+   ============================== */
+
+.input-group {
+    display: flex; 
+    align-items: center;
+    margin: 7px 0;
+}
+
+.input-group input {
+    border: 1px solid #777;
+    border-radius: 15px;
+    padding: 5px;
+    width: 70px;
+    text-align: center;
+    box-sizing: border-box;
+	margin-right: 15px;
+	margin-left: 10px;
+}
+
+.input-description {
+    font-size: 16px;
+    color: #666;
+    text-align: center; 
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ==============================
+   RESULT STYLES (Income, Expenses, Total)
+   ============================== */
+
+.main_result {
+	font-weight: bold;
+}
+
+/* ==============================
+   ACTION BUTTONS: SAVE + CLEAR
+   ============================== */
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-button {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 300;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.action-button i {
+    font-size: 15px;
+}
+
+/* Save */
+#saveButton {
+    background-color: #74eea3ef;
+    color: rgb(255, 255, 255);
+}
+
+#saveButton:hover {
+    background-color: #46f78d;
+    transform: scale(1.03);
+    color: rgb(0, 0, 0);
+}
+
+/* Clear */
+#clearButton {
+    background-color: #f4867e;
+    color: rgb(255, 255, 255);
+}
+
+#clearButton:hover {
+    background-color: #ff4441;
+    transform: scale(1.03);
+    color: rgb(0, 0, 0);
+}
+
+
+/* ==============================
+   FLIP CARD STYLES
+   ============================== */
+   
+.flip-card {
+    background-color: transparent;
+    width: 100%;
+    height: 80px;
+    perspective: 1000px;
+    cursor: pointer;
+	margin-top: 15px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+	animation: none;
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* gross */
+.flip-card-front {
+    background: #fac49d8a;
+    color: black;
+}
+
+/* net */
+.flip-card-back {
+    background: #18c79e59;
+    color: black;
+    transform: rotateY(180deg);
+}
+
+.flip-card-front p, .flip-card-back p {
+    margin: 5px auto 0 auto; 
+    line-height: 1.4; 
+}
+
+.expenses-card {
+    background: #d3cdfa78; 
+    border-radius: 15px; 
+    width: 100%;
+    height: 80px;
+    margin-top: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.expenses-card p {
+    margin: 3px 0;
+    line-height: 1.2;
+}
+
+@keyframes hintShake {
+    0% { transform: translateX(0); }
+    15% { transform: translateX(-3px) rotate(-1deg); }
+    30% { transform: translateX(3px) rotate(1deg); }
+    45% { transform: translateX(-3px) rotate(-1deg); }
+    60% { transform: translateX(3px) rotate(1deg); }
+    75% { transform: translateX(-2px) rotate(-0.5deg); }
+    100% { transform: translateX(0); }
+}
+
+.flip-card.hinting .flip-card-inner {
+    animation: hintShake 0.5s ease-in-out;
+}
+
+/* ==============================
+   BACK BUTTON
+   ============================== */
+
+.back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 35px;
+    background-color: #E0E5FF; 
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: normal;
+    border-radius: 6px;
+    transition: background 0.3s ease, transform 0.2s;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    gap: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.back-button:hover {
+    background-color: #C4CFFF; 
+    transform: scale(1.05); 
+}
+
+/* ==============================
+   MONTH SUMMARY PAGE * CALENDAR
+   ============================== */
+
+.calendar-container {
+    background-color: #4fc3f7;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+.calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 5px;
+    gap: 10px;
+}
+
+#selectedMonthLabel {
+    font-size: 17px;
+    font-weight: 700;
+    color: rgb(7, 0, 0);
+}
+
+#monthSelector {
+    padding: 5px 8px;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: white;
+    color: #333;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    cursor: pointer;
+}
+
+#selectedMonthName {
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+}
+
+/* calendar table */
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.calendar-table th {
+    background-color: #4fc3f7;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.calendar-table td {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    font-weight: 500;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.calendar-table td:hover {
+    background-color: #e1f5fe;
+}
+
+.calendar-day.today {
+    background-color: #0288d1;
+    color: white;
+    border-radius: 50%;
+}
+
+.calendar-day.has-data::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background-color: orange;
+    border-radius: 50%;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+.calendar-day {
+    position: relative;
+}

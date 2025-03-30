@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculation of wages</title>
+
+    <link rel="stylesheet" href="public/styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>	
+</head>
+<body>
+    <div class="container">
+		<div class="header">
+			<a href="month.html" class="back-button">⬅️ Back</a>
+			<h2 class="page-title" id="page-title"></h2>
+		</div>
+
+        <div class="section income">
+            <h3>Income</h3>
+			
+            <div class="input-group">
+				<input type="number" id="hourly_rate" value="30.50">
+				<span class="input-description">hourly rate</span>
+			</div>
+            <div class="input-group">
+				<input type="number" id="order_rate" value="5.50">
+				<span class="input-description">order rate</span>
+			</div>
+            <div class="input-group">
+				<input type="number" id="working_hours" placeholder="hours">
+				<span class="input-description">working hours</span>
+			</div>
+            <div class="input-group">
+				<input type="number" id="orders_count" placeholder="orders">
+				<span class="input-description">number of orders</span>
+			</div>
+            <div class="input-group">
+				<input type="number" id="tips" placeholder="zl">
+				<span class="input-description">tips</span>
+			</div>
+
+			<div class="result_income">	
+				<div class="flip-card">
+					<div class="flip-card-inner">
+						<div class="flip-card-front">
+							<p>Payment per order: <span id="gross_order_earnings">0</span></p>
+							<p class="main_result">Gross amount: <span id="total_gross">0</span></p>
+						</div>
+						<div class="flip-card-back">
+							<p>Payment per order: <span id="net_order_earnings">0</span></p>
+							<p class="main_result">Net amount: <span id="total_net">0</span></p>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+		
+        <div class="section expenses">
+            <h3>Expenses</h3>
+            <div class="input-group">
+				<input type="number" id="km_per_day" placeholder="km">
+				<span class="input-description">daily kilometers</span>
+			</div>
+            <div class="input-group">
+				<input type="number" id="parking" placeholder="zl">
+				<span class="input-description">parking</span>
+			</div>
+			<div class="expenses-card">	
+				<p>Fuel cost: <span id="fuel_cost">0</span></p>
+				<p class="main_result">Total expenses: <span id="total_expenses">0</span></p>
+			</div>
+        </div>
+		
+        <div class="section sum">
+			<div class="result_sum">
+				<p>Car income: <span id="car_income">0</span></p>
+				<p class="main_result">Final amount: <span id="final_amount">0</span></p>
+			</div>  
+			<div class="button-row">
+				<button id="clearButton" class="action-button clear">Clear</button>
+				<button id="saveButton" class="action-button save">Save</button>
+			</div>		
+        </div>
+		
+    </div>
+	
+	<script src="src/firebase-config.js"></script>
+	<script src="src/day-summary.js"></script>
+
+</body>
+</html>
