@@ -11,17 +11,14 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h2 class="page-title" id="page-title">Month Overview</h2>
-        </div>
-        
-        <!-- 🔽 drop-down -->
-        <div class="calendar-header">
-            <select id="monthSelector"></select>
-        </div>
+        <h2 class="page-title" id="page-title">Month Overview</h2>
     
         <!-- 📅 calendar -->
         <div class="calendar-container">
+            <div class="calendar-controls">
+                <span id="selectedMonthLabel">March 2025</span>
+                <select id="monthSelector"></select>
+            </div>
             <table class="calendar-table">
                 <thead>
                     <tr>
@@ -34,18 +31,30 @@
             </table>
         </div>
     
-        <!-- 📊 results of the month -->
+        <!-- 📊 Month Summary -->
         <div class="section summary_box">
             <h3>📊 Month Summary</h3>
             <p>Working hours: <span id="total_working_hours">0 h</span></p>
             <p>Number of orders: <span id="total_orders">0</span></p>
         </div>
+
+        <!-- 🎁 Bonuses -->
+        <div class="section bonuses_box">
+            <h3>🎁 Bonuses</h3>
+            <p>Bonus per order: <span id="bonus_per_order">0 PLN</span></p>
+            <p>Washing: <span id="washing_bonus">0 PLN</span></p>
+            <p>Phone: <span id="phone_bonus">0 PLN</span></p>
+        </div>
+
+        <!-- 🚗 Car Summary -->
         <div class="section car_box">
             <h3>🚗 Car Summary</h3>
             <p>Fuel cost: <span id="total_fuel_cost">0 PLN</span></p>
             <p>Car income: <span id="total_car_income">0 PLN</span></p>
             <p>Kilometers: <span id="total_km">0 km</span></p>
         </div>
+
+        <!-- 💵 Final Result -->
         <div>
             <p class="main_result">💵 Income: <span id="total_final">0 PLN</span></p>
         </div>
