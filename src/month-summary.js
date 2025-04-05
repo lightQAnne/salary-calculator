@@ -1,28 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // ==============================
-    // 📅 Parses month (YYYY-MM) from the "date" URL parameter
-    // ==============================
-    
-    function getMonthFromURL() {
-        const params = new URLSearchParams(window.location.search);
-        const date = params.get("date");
-        if (!date) return null;
-    
-        return date.slice(0, 7);
-    }
-    
+
     // ==============================
     // 🔁 Fetches and updates monthly summary data from Firebase
     // ==============================
 
-    async function loadMonthSummary() {
+    window.loadMonthSummary = async function (monthId = null) {
         if (!window.db) {
             console.error("❌ Firebase not initialized!");
             return;
         }
     
-        const monthId = getMonthFromURL() || new Date().toISOString().slice(0, 7);
+        monthId = monthId || new Date().toISOString().slice(0, 7);
         console.log(`🔄 Loading summary for: ${monthId}`);
     
         const monthRef = db.collection("monthSummary").doc(monthId);
@@ -43,10 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
     
             updateText("total_working_hours", summary.totalWorkingHours || 0, " h");
             updateText("total_orders", summary.totalOrders || 0);
+            updateText("month_tips", (summary.tips || 0).toFixed(2), " PLN");
             updateText("total_fuel_cost", (summary.totalFuelCost || 0).toFixed(2), " PLN");
             updateText("total_car_income", (summary.totalCarIncome || 0).toFixed(2), " PLN");
             updateText("total_km", summary.totalKilometers || 0, " km");
-            updateText("total_final", (summary.totalFinalAmount || 0).toFixed(2), " PLN");
+            updateText("month_amount_per_hours", (summary.totalNetEarnings || 0).toFixed(2), " PLN");
+            updateText("month_final_amount", (summary.totalFinalAmount || 0).toFixed(2), " PLN");
     
             console.log(`✅ Loaded summary for: ${monthId}`);
         } catch (error) {

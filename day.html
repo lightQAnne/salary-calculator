@@ -48,11 +48,11 @@
 					<div class="flip-card-inner">
 						<div class="flip-card-front">
 							<p>Payment per order: <span id="gross_order_earnings">0</span></p>
-							<p class="main_result">Gross amount: <span id="total_gross">0</span></p>
+							<p class="main_result">Gross amount: <span id="day_hourly_gross_earnings">0</span></p>
 						</div>
 						<div class="flip-card-back">
 							<p>Payment per order: <span id="net_order_earnings">0</span></p>
-							<p class="main_result">Net amount: <span id="total_net">0</span></p>
+							<p class="main_result">Net amount: <span id="day_hourly_net_earnings">0</span></p>
 						</div>
 					</div>
 				</div>
@@ -78,7 +78,7 @@
         <div class="section sum">
 			<div class="result_sum">
 				<p>Car income: <span id="car_income">0</span></p>
-				<p class="main_result">Final amount: <span id="final_amount">0</span></p>
+				<p class="main_result">Final amount: <span id="day_final_amount">0</span></p>
 			</div>  
 			<div class="button-row">
 				<button id="clearButton" class="action-button clear">Clear</button>
@@ -88,8 +88,8 @@
 		
     </div>
 	
-	<script src="src/firebase-config.js"></script>
-	<script src="src/day-summary.js"></script>
+	<script src="src/firebase-config.js" defer></script>
+	<script src="src/day-summary.js" defer></script>
 
 </body>
 </html>
