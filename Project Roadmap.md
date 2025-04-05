@@ -28,7 +28,6 @@ A structured path for building and scaling a personal earnings & logistics track
 
 **UI/UX:**
 - [x] Page title with selected date
-- [?] Collapse or group categories visually
 
 ---
 
@@ -45,7 +44,6 @@ A structured path for building and scaling a personal earnings & logistics track
 - [x] Load summary data from Firebase by selected month
 - [x] Display: working hours, orders, tips, fuel, car income
 - [ ] Add summary per category (e.g. tips app vs cash)
-- [?] Highlight highest-earning days
 
 **URL Logic:**
 - [x] Reflect selected month in URL
@@ -88,6 +86,7 @@ A structured path for building and scaling a personal earnings & logistics track
 - [ ] Add server (Node.js?) to enable hosting and user accounts
 - [ ] Support multi-language and currency
 - [ ] PWA support (offline mode?)
+- [ ] Highlight highest-earning days
 
 ---
 
