@@ -1,25 +1,62 @@
-# Salary Calculator
+# 🧮 Salary Tracker
 
-This is my first test project where I created a simple **Salary Calculator** that calculates the total salary based on worked hours. This project is an experiment where I apply my newly acquired programming skills.
+A personal calculator and calendar to track income, hours worked, deliveries, car expenses, and tips — all stored with Firebase.
 
-## Features
-- Calculate salary based on hourly rates.
-- Takes into account flexible working hours.
-- Easy-to-use interface with basic input/output functionality.
+---
 
-## Technologies Used
-- **HTML** for structure.
-- **JavaScript** for logic (calculation of hours and salary).
+## 🚀 Features
 
-## Purpose
-This project is a part of my learning process where I experiment with coding and try to implement real-world solutions. The main goal is to deepen my understanding of programming and improve my skills.
+- 📆 Calendar view with per-day tracking
+- 🧾 Breakdown of earnings: hours, orders, tips (gross/net)
+- 🚗 Car mileage and fuel costs
+- 📊 Monthly summaries with auto-recalculation
+- 🔄 Firebase-based saving and loading
+- ✍️ Fully editable inputs with save/clear controls
+- 🌍 URL-linked navigation (day/month)
 
-Feel free to check it out, and I would appreciate any feedback or suggestions for improvement!
+---
 
-## How to Use
-1. Clone the repository.
-2. Open the `day.html` in your browser.
-3. Enter the number of hours worked and the hourly rate to calculate the salary.
+## 📁 Project Structure
 
-## License
-This project is open-source, feel free to contribute or modify it according to your needs.
+| File               | Purpose                                 |
+|--------------------|------------------------------------------|
+| `day.html`         | Day-by-day input & calculations          |
+| `month.html`       | Calendar + monthly summary               |
+| `calendar.js`      | Dynamic calendar generation              |
+| `day-summary.js`   | Day calculations + Firebase interaction  |
+| `month-summary.js` | Monthly aggregation logic                |
+| `firebase-config.js` | Firestore setup                        |
+| `styles.css`       | UI styling                               |
+
+---
+
+## 🛣️ Development Roadmap
+
+Check out the full roadmap:  
+[🗺️ View Project Roadmap](./ROADMAP.md)
+
+---
+
+## 📸 Screenshots
+
+-
+
+---
+
+## 📦 Tech Stack
+
+- HTML, CSS, Vanilla JavaScript
+- Firebase (Firestore)
+- Visual Studio Code
+
+---
+
+## 🤓 Author
+
+Built with care by **Anna** — QA & Dev with love for clean UI and logic-based tools.
+
+---
+
+## 📝 License
+
+This project is private and personal. For educational purposes only.
