@@ -49,28 +49,32 @@ document.addEventListener("DOMContentLoaded", () => {
         const kmPerDay = Math.max(parseFloat(kmPerDayInput.value) || 0, 0);
         const parking = Math.max(parseFloat(parkingInput.value) || 0, 0);
 
-        const earningsFromHours = workingHours * hourlyRate;
+        // gross
+        const dayHourlyGrossEarnings = workingHours * hourlyRate;
         const grossOrderEarnings = orderCount * orderRate;
-        const totalGrossEarnings = earningsFromHours + tips;
 
-        const totalNetEarnings = calculateNetEarnings(totalGrossEarnings);
+        // net
+        const dayHourlyNetEarnings = calculateNetEarnings(dayHourlyGrossEarnings);
         const netOrderEarnings = calculateNetEarnings(grossOrderEarnings);
+        const netTipsApp = calculateNetEarnings(tips);
 
+        // car
         const fuelCost = kmPerDay * 0.42;
-        const carIncome = netOrderEarnings - fuelCost;
         const totalExpenses = parking + fuelCost;
-        const finalAmount = totalNetEarnings + carIncome;
+        const carIncome = netOrderEarnings - fuelCost;
+
+        const finalAmount = dayHourlyNetEarnings + carIncome + netTipsApp;
 
         document.getElementById("gross_order_earnings").innerText = grossOrderEarnings.toFixed(2) + " PLN";
         document.getElementById("net_order_earnings").innerText = netOrderEarnings.toFixed(2) + " PLN";
-        document.getElementById("total_gross").innerText = totalGrossEarnings.toFixed(2) + " PLN";
-        document.getElementById("total_net").innerText = totalNetEarnings.toFixed(2) + " PLN";
+        document.getElementById("day_hourly_gross_earnings").innerText = dayHourlyGrossEarnings.toFixed(2) + " PLN";
+        document.getElementById("day_hourly_net_earnings").innerText = dayHourlyNetEarnings.toFixed(2) + " PLN";
 
         document.getElementById("fuel_cost").innerText = fuelCost.toFixed(2) + " PLN";
         document.getElementById("total_expenses").innerText = totalExpenses.toFixed(2) + " PLN";
 
         document.getElementById("car_income").innerText = carIncome.toFixed(2) + " PLN";
-        document.getElementById("final_amount").innerText = finalAmount.toFixed(2) + " PLN";
+        document.getElementById("day_final_amount").innerText = finalAmount.toFixed(2) + " PLN";
     }
 
     function calculateNetEarnings(grossEarnings) {
@@ -108,16 +112,30 @@ document.addEventListener("DOMContentLoaded", () => {
     
         const fullDayId = getFullDayId();
         const monthId = fullDayId.slice(0, 7);
+
+        const workingHoursRaw = workingHoursInput.value.trim();
+        let workingHours = 0;
+
+        if (workingHoursRaw.includes(":")){
+            const [h, m] = workingHoursRaw.split(":").map(Number);
+            workingHours = h + (m / 60);
+        } else {
+            workingHours = parseFloat(workingHoursRaw.replace(',', '.')) || 0;
+        }
+
+        workingHours = Math.max(workingHours, 0);
     
         const dayData = {
-            workingHours: parseFloat(workingHoursInput.value) || 0,
+            workingHours: workingHours,
             orders: parseFloat(ordersCountInput.value) || 0,
             tips: parseFloat(tipsInput.value) || 0,
             fuelCost: parseFloat(document.getElementById("fuel_cost").innerText) || 0,
             carIncome: parseFloat(document.getElementById("car_income").innerText) || 0,
             kilometers: parseFloat(kmPerDayInput.value) || 0,
             parking: parseFloat(parkingInput.value) || 0,
-            finalAmount: parseFloat(document.getElementById("final_amount").innerText) || 0
+            finalAmount: parseFloat(document.getElementById("day_final_amount").innerText) || 0,
+            etEarningsFromHours: parseFloat(document.getElementById("day_hourly_net_earnings").innerText) || 0,
+            netTipsApp: parseFloat(document.getElementById("net_tips_app")?.innerText || 0) || 0
         };
     
         try {
@@ -229,6 +247,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 totalKilometers: 0,
                 totalWorkingHours: 0,
                 tips: 0,
+                netEarningsFromHours: 0,
+                netTipsApp: 0,
                 month: monthId
             };
     
@@ -243,6 +263,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     summary.totalKilometers += data.kilometers || 0;
                     summary.totalWorkingHours += data.workingHours || 0;
                     summary.tips += data.tips || 0;
+                    summary.netEarningsFromHours += data.netEarningsFromHours || 0;
+                    summary.netTipsApp += data.netTipsApp || 0;
                 }
             });
     

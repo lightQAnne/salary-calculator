@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Month Summary</title>
+    <title>Monthly Salary Overview</title>
     
     <link rel="stylesheet" href="public/styles.css">
 
@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="container">
-        <h2 class="page-title" id="page-title">Month Overview</h2>
+        <h2 class="page-title" id="page-title">Monthly Salary Overview</h2>
     
         <!-- 📅 calendar -->
         <div class="calendar-container">
@@ -37,7 +37,10 @@
         <div class="section summary_box">
             <h3>📊 Month Summary</h3>
             <p>Working hours: <span id="total_working_hours">0 h</span></p>
+            <p>Net from hours: <span id="month_net_hours">0 PLN</span></p>
+            <p>Net tips (app): <span id="month_net_tips">0 PLN</span></p>
             <p>Number of orders: <span id="total_orders">0</span></p>
+            <p>Tips total: <span id="month_tips">0 PLN</span></p>
         </div>
 
         <!-- 🎁 Bonuses -->
@@ -57,14 +60,16 @@
         </div>
 
         <!-- 💵 Final Result -->
-        <div>
-            <p class="main_result">💵 Income: <span id="total_final">0 PLN</span></p>
+        <div class="section main_result">
+            <h3> Result </h3>
+            <p>Final amount: <span id="month_amount_per_hours">0 PLN</span></p>
+            <p class="main_result">💵 Total income: <span id="month_final_amount">0 PLN</span></p>
         </div>
     
     </div>    
 
-    <script src="src/firebase-config.js"></script>
-    <script src="src/calendar.js"></script>
-    <script src="src/month-summary.js"></script>
+    <script src="src/firebase-config.js" defer></script>
+    <script src="src/calendar.js" defer></script>
+    <script src="src/month-summary.js" defer></script>
 </body>
 </html>
