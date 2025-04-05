@@ -95,6 +95,5 @@ A structured path for building and scaling a personal earnings & logistics track
 
 - 🎯 Focus: UX, modular refactor, URL-driven logic
 
-📊 ![Progress](https://progress-bar.dev/54/)
 
 🧠 *This roadmap evolves as the project grows.*
