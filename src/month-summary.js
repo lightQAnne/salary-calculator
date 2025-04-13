@@ -4,23 +4,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🔁 Fetches and updates monthly summary data from Firebase
     // ==============================
 
+    function getCurrentMonthId() {
+        return new Date().toISOString().slice(0, 7);
+    }
+
     window.loadMonthSummary = async function (monthId = null) {
-        if (!window.db) {
-            console.error("❌ Firebase not initialized!");
-            return;
-        }
+        if (!window.db) return console.error("❌ Firebase not initialized!");
     
-        monthId = monthId || new Date().toISOString().slice(0, 7);
-        console.log(`🔄 Loading summary for: ${monthId}`);
-    
+        monthId = monthId || getCurrentMonthId();
         const monthRef = db.collection("monthSummary").doc(monthId);
     
         try {
             const doc = await monthRef.get();
-            if (!doc.exists) {
-                console.log(`ℹ️ No summary data found for: ${monthId}`);
-                return;
-            }
+            if (!doc.exists) return;
     
             const summary = doc.data();
     
@@ -35,10 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
             updateText("total_fuel_cost", (summary.totalFuelCost || 0).toFixed(2), " PLN");
             updateText("total_car_income", (summary.totalCarIncome || 0).toFixed(2), " PLN");
             updateText("total_km", summary.totalKilometers || 0, " km");
-            updateText("month_amount_per_hours", (summary.totalNetEarnings || 0).toFixed(2), " PLN");
             updateText("month_final_amount", (summary.totalFinalAmount || 0).toFixed(2), " PLN");
     
-            console.log(`✅ Loaded summary for: ${monthId}`);
         } catch (error) {
             console.error(`❌ Failed to load summary for ${monthId}:`, error);
         }
