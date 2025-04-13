@@ -9,12 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==============================
 
     const hourlyRateInput = document.getElementById("hourly_rate");
-    const orderRateInput = document.getElementById("order_rate");
     const workingHoursInput = document.getElementById("working_hours");
     const ordersCountInput = document.getElementById("orders_count");
     const tipsInput = document.getElementById("tips");
     const kmPerDayInput = document.getElementById("km_per_day");
-    const parkingInput = document.getElementById("parking");
     const saveButton = document.getElementById("saveButton");
     const clearButton = document.getElementById("clearButton");
 
@@ -32,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    [workingHoursInput, ordersCountInput, tipsInput, kmPerDayInput, parkingInput].forEach(input => {
+    [workingHoursInput, ordersCountInput, tipsInput, kmPerDayInput].forEach(input => {
         input.addEventListener("keypress", validateNumericInput);
     });
 
@@ -42,12 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function calculate() {
         const hourlyRate = parseFloat(hourlyRateInput.value) || 30.50;
-        const orderRate = parseFloat(orderRateInput.value) || 5.50;
+        const orderRate = 5.50; // Static rate
         const workingHours = Math.max(parseFloat(workingHoursInput.value.replace(',', '.')) || 0, 0);
         const orderCount = Math.max(parseFloat(ordersCountInput.value) || 0, 0);
         const tips = Math.max(parseFloat(tipsInput.value.replace(',', '.')) || 0, 0);
-        const kmPerDay = Math.max(parseFloat(kmPerDayInput.value) || 0, 0);
-        const parking = Math.max(parseFloat(parkingInput.value) || 0, 0);
+        const kmPerDay = Math.max(parseFloat(kmPerDayInput.value) || 0, 0);;
 
         // gross
         const dayHourlyGrossEarnings = workingHours * hourlyRate;
@@ -60,21 +57,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // car
         const fuelCost = kmPerDay * 0.42;
-        const totalExpenses = parking + fuelCost;
         const carIncome = netOrderEarnings - fuelCost;
 
-        const finalAmount = dayHourlyNetEarnings + carIncome + netTipsApp;
+        const finalAmount = dayHourlyNetEarnings + netTipsApp;
 
-        document.getElementById("gross_order_earnings").innerText = grossOrderEarnings.toFixed(2) + " PLN";
-        document.getElementById("net_order_earnings").innerText = netOrderEarnings.toFixed(2) + " PLN";
-        document.getElementById("day_hourly_gross_earnings").innerText = dayHourlyGrossEarnings.toFixed(2) + " PLN";
-        document.getElementById("day_hourly_net_earnings").innerText = dayHourlyNetEarnings.toFixed(2) + " PLN";
-
-        document.getElementById("fuel_cost").innerText = fuelCost.toFixed(2) + " PLN";
-        document.getElementById("total_expenses").innerText = totalExpenses.toFixed(2) + " PLN";
-
-        document.getElementById("car_income").innerText = carIncome.toFixed(2) + " PLN";
-        document.getElementById("day_final_amount").innerText = finalAmount.toFixed(2) + " PLN";
+        const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = value.toFixed(2) + " PLN";
+        };
+    
+        setText("net_order_earnings", netOrderEarnings);
+        setText("fuel_cost", fuelCost);
+        setText("car_income", carIncome);
+        setText("day_final_amount", finalAmount);
     }
 
     function calculateNetEarnings(grossEarnings) {
@@ -125,17 +120,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         workingHours = Math.max(workingHours, 0);
     
+        const getValue = (id) => {
+            const el = document.getElementById(id);
+            return el ? parseFloat(el.innerText) || 0 : 0;
+        };
+    
         const dayData = {
             workingHours: workingHours,
             orders: parseFloat(ordersCountInput.value) || 0,
             tips: parseFloat(tipsInput.value) || 0,
-            fuelCost: parseFloat(document.getElementById("fuel_cost").innerText) || 0,
-            carIncome: parseFloat(document.getElementById("car_income").innerText) || 0,
+            fuelCost: getValue("fuel_cost"),
+            carIncome: getValue("car_income"),
             kilometers: parseFloat(kmPerDayInput.value) || 0,
-            parking: parseFloat(parkingInput.value) || 0,
-            finalAmount: parseFloat(document.getElementById("day_final_amount").innerText) || 0,
-            etEarningsFromHours: parseFloat(document.getElementById("day_hourly_net_earnings").innerText) || 0,
-            netTipsApp: parseFloat(document.getElementById("net_tips_app")?.innerText || 0) || 0
+            finalAmount: getValue("day_final_amount")
         };
     
         try {
@@ -187,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 workingHoursInput.value = data.workingHours || "";
                 kmPerDayInput.value = data.kilometers || "";
                 tipsInput.value = data.tips || "";
-                parkingInput.value = data.parking || "";
     
                 calculate();
             } else {
@@ -215,7 +211,6 @@ document.addEventListener("DOMContentLoaded", () => {
             workingHoursInput.value = "";
             kmPerDayInput.value = "";
             tipsInput.value = "";
-            parkingInput.value = "";
             calculate();
     
             await recalculateMonthSummary(monthId);
@@ -247,8 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 totalKilometers: 0,
                 totalWorkingHours: 0,
                 tips: 0,
-                netEarningsFromHours: 0,
-                netTipsApp: 0,
                 month: monthId
             };
     
@@ -263,8 +256,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     summary.totalKilometers += data.kilometers || 0;
                     summary.totalWorkingHours += data.workingHours || 0;
                     summary.tips += data.tips || 0;
-                    summary.netEarningsFromHours += data.netEarningsFromHours || 0;
-                    summary.netTipsApp += data.netTipsApp || 0;
                 }
             });
     
@@ -274,25 +265,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("❌ Error recalculating:", error);
         }
     }    
-
-    // ==============================
-    // 🎴 Flip Card Animation
-    // ==============================
-
-    const flipCard = document.querySelector(".flip-card");
-
-    if (flipCard) {
-        flipCard.addEventListener("click", () => {
-            flipCard.classList.toggle("flipped");
-        });
-
-        setInterval(() => {
-            if (!flipCard.classList.contains("flipped")) {
-                flipCard.classList.add("hinting");
-                setTimeout(() => flipCard.classList.remove("hinting"), 500);
-            }
-        }, 8000);
-    }
 
     // ==============================
     // 🗓️ Title Initialization

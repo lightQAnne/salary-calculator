@@ -10,25 +10,24 @@
 	
 	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>	
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	
 </head>
 <body>
     <div class="container">
 		<div class="header">
-			<a href="month.html" class="back-button">⬅️ Back</a>
+			<a href="month.html" class="back-button"><i class="fas fa-arrow-left"></i></a>
+
 			<h2 class="page-title" id="page-title"></h2>
 		</div>
 
         <div class="section income">
-            <h3>Income</h3>
+            <h3>Earnings Input</h3>
 			
             <div class="input-group">
 				<input type="number" id="hourly_rate" value="30.50">
-				<span class="input-description">hourly rate</span>
-			</div>
-            <div class="input-group">
-				<input type="number" id="order_rate" value="5.50">
-				<span class="input-description">order rate</span>
+				<span class="input-description">hourly rate (gross)</span>
 			</div>
             <div class="input-group">
 				<input type="number" id="working_hours" placeholder="hours">
@@ -42,49 +41,34 @@
 				<input type="number" id="tips" placeholder="zl">
 				<span class="input-description">tips</span>
 			</div>
-
-			<div class="result_income">	
-				<div class="flip-card">
-					<div class="flip-card-inner">
-						<div class="flip-card-front">
-							<p>Payment per order: <span id="gross_order_earnings">0</span></p>
-							<p class="main_result">Gross amount: <span id="day_hourly_gross_earnings">0</span></p>
-						</div>
-						<div class="flip-card-back">
-							<p>Payment per order: <span id="net_order_earnings">0</span></p>
-							<p class="main_result">Net amount: <span id="day_hourly_net_earnings">0</span></p>
-						</div>
-					</div>
-				</div>
-			</div>
-        </div>
-		
-        <div class="section expenses">
-            <h3>Expenses</h3>
-            <div class="input-group">
+			<div class="input-group">
 				<input type="number" id="km_per_day" placeholder="km">
 				<span class="input-description">daily kilometers</span>
 			</div>
-            <div class="input-group">
-				<input type="number" id="parking" placeholder="zl">
-				<span class="input-description">parking</span>
-			</div>
+
+        </div>
+		
+        <div class="section car_earnings">
+            <h3>Car Earnings</h3>
+            
 			<div class="expenses-card">	
+				<p>Earnings from orders (car): <span id="net_order_earnings">0</span></p>
 				<p>Fuel cost: <span id="fuel_cost">0</span></p>
-				<p class="main_result">Total expenses: <span id="total_expenses">0</span></p>
+				<p>Car income: <span id="car_income">0</span></p>
 			</div>
         </div>
 		
-        <div class="section sum">
-			<div class="result_sum">
-				<p>Car income: <span id="car_income">0</span></p>
-				<p class="main_result">Final amount: <span id="day_final_amount">0</span></p>
-			</div>  
-			<div class="button-row">
-				<button id="clearButton" class="action-button clear">Clear</button>
-				<button id="saveButton" class="action-button save">Save</button>
-			</div>		
-        </div>
+        <p class="main_result">
+			Final amount: <span id="day_final_amount">0</span>
+			<span class="tooltip">
+				<i class="fas fa-info-circle"></i>
+				<span class="tooltiptext">Net earnings from hourly rate and tips (excluding car income)</span>
+			</span>
+		</p>
+		<div class="button-row">
+			<button id="clearButton" class="action-button clear">Clear</button>
+			<button id="saveButton" class="action-button save">Save</button>
+		</div>
 		
     </div>
 	
