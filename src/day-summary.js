@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ordersCountInput = document.getElementById("orders_count");
     const tipsInput = document.getElementById("tips");
     const kmPerDayInput = document.getElementById("km_per_day");
+    const fuelPriceInput = document.getElementById("fuel_price");
     const saveButton = document.getElementById("saveButton");
     const clearButton = document.getElementById("clearButton");
 
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (saveButton) saveButton.addEventListener("click", saveDayData);
     
     // ==============================
-    // ✅ Input validation
+    // 🔧 Utilities
     // ==============================
 
     const validateNumericInput = (event) => {
@@ -30,7 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    [workingHoursInput, ordersCountInput, tipsInput, kmPerDayInput].forEach(input => {
+    function parseNumeric(input, fallback = 0) {
+    const raw = input.value.replace(',', '.');
+    const parsed = parseFloat(raw);
+    return isNaN(parsed) ? fallback : parsed;
+    }
+
+    [workingHoursInput, ordersCountInput, tipsInput, kmPerDayInput, fuelPriceInput].forEach(input => {
         input.addEventListener("keypress", validateNumericInput);
     });
 
@@ -40,11 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function calculate() {
         const hourlyRate = parseFloat(hourlyRateInput.value) || 30.50;
-        const orderRate = 5.50; // Static rate
-        const workingHours = Math.max(parseFloat(workingHoursInput.value.replace(',', '.')) || 0, 0);
-        const orderCount = Math.max(parseFloat(ordersCountInput.value) || 0, 0);
-        const tips = Math.max(parseFloat(tipsInput.value.replace(',', '.')) || 0, 0);
-        const kmPerDay = Math.max(parseFloat(kmPerDayInput.value) || 0, 0);;
+        const orderRate = 5.50; // To-do: make editable?
+        const workingHours = Math.max(parseNumeric(workingHoursInput), 0);
+        const orderCount = Math.max(parseNumeric(ordersCountInput), 0);
+        const tips = Math.max(parseNumeric(tipsInput), 0);
+        const kmPerDay = Math.max(parseNumeric(kmPerDayInput), 0);;
 
         // gross
         const dayHourlyGrossEarnings = workingHours * hourlyRate;
@@ -56,7 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const netTipsApp = calculateNetEarnings(tips);
 
         // car
-        const fuelCost = kmPerDay * 0.42;
+        const fuelPrice = parseNumeric(fuelPriceInput);
+        const avgConsumption = 7.0;
+        const costPerKm = (fuelPrice * avgConsumption) / 100;
+        const fuelCost = kmPerDay * costPerKm;
+
         const carIncome = netOrderEarnings - fuelCost;
 
         const finalAmount = dayHourlyNetEarnings + netTipsApp;
@@ -115,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const [h, m] = workingHoursRaw.split(":").map(Number);
             workingHours = h + (m / 60);
         } else {
-            workingHours = parseFloat(workingHoursRaw.replace(',', '.')) || 0;
+            workingHours = parseNumeric(workingHoursRaw);
         }
 
         workingHours = Math.max(workingHours, 0);
@@ -137,9 +148,16 @@ document.addEventListener("DOMContentLoaded", () => {
     
         try {
             await ensureMonthExists(monthId);
-            await db.collection("monthData").doc(fullDayId).set(dayData);
+            
+            const fuelPrice = parseNumeric(fuelPriceInput, null);
+            if (fuelPrice !== null) {
+                await db.collection("fuelHistory").doc(fullDayId).set({ price: fuelPrice });
+            }
+
+            await db.collection("monthData").doc(fullDayId).set(dayData);        
             console.log("💾 Saved:", fullDayId, dayData);
             alert(`✅ Data for ${fullDayId} saved!`);
+
             await recalculateMonthSummary(monthId);
         } catch (error) {
             console.error("❌ Error saving data:", error);
@@ -235,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const snapshot = await db.collection("monthData").get();
             let summary = {
                 totalOrders: 0,
-                totalPaymentPerOrder: 0,
+
                 totalFuelCost: 0,
                 totalCarIncome: 0,
                 totalFinalAmount: 0,
@@ -278,6 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedDate = getSelectedDateFromURL();
     if (selectedDate) {
         loadDayData(selectedDate); //load from Firebase;
+        loadFuelPriceForDate(selectedDate);
 
         const parts = selectedDate.split("-");
         const day = parts[2];
@@ -287,5 +306,34 @@ document.addEventListener("DOMContentLoaded", () => {
         const titleElement = document.getElementById("page-title");
         if (titleElement) titleElement.innerText = title;
     }
+
+    // ==============================
+    // 🗓️ Fuel Price
+    // ==============================
+
+    async function loadFuelPriceForDate(dateStr) {
+    if (!window.db || !dateStr) return;
+
+    const snapshot = await db.collection("fuelHistory").get();
+    const entries = [];
+
+    snapshot.forEach(doc => {
+        if (doc.exists) {
+            entries.push({ date: doc.id, price: doc.data().price });
+        }
+    });
+
+    entries.sort((a, b) => b.date.localeCompare(a.date)); // от новых к старым
+
+    for (const entry of entries) {
+        if (entry.date <= dateStr) {
+            const input = document.getElementById("fuel_price");
+            if (input && !input.value) {
+                input.value = entry.price.toFixed(2);
+            }
+            break;
+        }
+    }
+}
 
 });
