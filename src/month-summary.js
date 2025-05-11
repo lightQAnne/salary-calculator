@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.loadMonthSummary = async function (monthId = null) {
         if (!window.db) return console.error("❌ Firebase not initialized!");
     
-        monthId = monthId || getCurrentMonthId();
+        if (!monthId) monthId = getCurrentMonthId();
         const monthRef = db.collection("monthSummary").doc(monthId);
     
         try {

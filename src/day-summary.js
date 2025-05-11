@@ -31,9 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    function parseNumeric(input, fallback = 0) {
-    const raw = input.value.replace(',', '.');
-    const parsed = parseFloat(raw);
+    function parseNumeric(value, fallback = 0) {
+    const raw = typeof value === "string" ? value : value.value;
+    const parsed = parseFloat(raw.replace(',', '.'));
     return isNaN(parsed) ? fallback : parsed;
     }
 
@@ -119,15 +119,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const fullDayId = getFullDayId();
         const monthId = fullDayId.slice(0, 7);
 
-        const workingHoursRaw = workingHoursInput.value.trim();
         let workingHours = 0;
+        const workingHoursRaw = workingHoursInput.value.trim();
 
-        if (workingHoursRaw.includes(":")){
+        if (workingHoursRaw.includes(":")) {
             const [h, m] = workingHoursRaw.split(":").map(Number);
             workingHours = h + (m / 60);
         } else {
-            workingHours = parseNumeric(workingHoursRaw);
+            workingHours = parseFloat(workingHoursRaw.replace(",", ".")) || 0;
         }
+
 
         workingHours = Math.max(workingHours, 0);
     
@@ -174,7 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!doc.exists) {
             await ref.set({
                 totalOrders: 0,
-                totalPaymentPerOrder: 0,
                 totalFuelCost: 0,
                 totalCarIncome: 0,
                 totalFinalAmount: 0,
@@ -267,7 +267,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (doc.id.startsWith(prefix)) {
                     const data = doc.data();
                     summary.totalOrders += data.orders || 0;
-                    summary.totalPaymentPerOrder += data.paymentPerOrder || 0;
                     summary.totalFuelCost += data.fuelCost || 0;
                     summary.totalCarIncome += data.carIncome || 0;
                     summary.totalFinalAmount += data.finalAmount || 0;
@@ -323,17 +322,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    entries.sort((a, b) => b.date.localeCompare(a.date)); // от новых к старым
+    entries.sort((a, b) => b.date.localeCompare(a.date));
 
-    for (const entry of entries) {
-        if (entry.date <= dateStr) {
-            const input = document.getElementById("fuel_price");
-            if (input && !input.value) {
-                input.value = entry.price.toFixed(2);
+        for (const entry of entries) {
+            if (entry.date <= dateStr) {
+                const input = document.getElementById("fuel_price");
+                if (input && !input.value) {
+                    input.value = entry.price.toFixed(2);
+
+                    const tooltip = document.getElementById("fuel_price_tooltip");
+                    const tooltipText = document.getElementById("fuel_price_tooltip_text");
+
+                    if (tooltip && tooltipText) {
+                        const parsedDate = new Date(entry.date);
+                        const dateStr = parsedDate.toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short'
+                        });
+                        tooltipText.innerHTML = `Price auto-filled from: <br> ${dateStr}`;
+                        tooltip.style.display = 'inline-block';
+                    }
+                }
+                break;
             }
-            break;
         }
     }
-}
 
 });

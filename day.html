@@ -46,8 +46,12 @@
 				<span class="input-description">daily kilometers</span>
 			</div>
 			<div class="input-group">
-				<input type="number" id="fuel_price" placeholder="zł/l">
-				<span class="input-description">fuel price:</span>
+				<input type="number" id="fuel_price" placeholder="zł/l" step="0.01">
+				<span class="input-description">fuel price</span>
+					<span class="tooltip" id="fuel_price_tooltip" style="display: none;">
+						<i class="fas fa-info-circle"></i>
+						<span class="tooltiptext" id="fuel_price_tooltip_text">placeholder</span>
+					</span>
 			</div>
 
         </div>
