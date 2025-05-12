@@ -6,6 +6,7 @@
     <title>Monthly Salary Overview</title>
     
     <link rel="stylesheet" href="public/styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -45,11 +46,11 @@
             <h3>🎁 Bonuses</h3>
             <p>Bonus per order: <span id="bonus_per_order">0</span></p>
             <p>Washing: <span id="washing_bonus">0</span></p>
-            <p>Phone: <span id="phone_bonus">0</span></p>
+            <p>Phone: <span id="phone_usage_bonus">0</span></p>
         </div>
 
         <!-- 🚗 Car Summary -->
-        <div class="section car_box">
+        <div class="section car_earnings">
             <h3>🚗 Car Summary</h3>
             <p>Fuel cost: <span id="total_fuel_cost">0</span></p>
             <p>Kilometers: <span id="total_km">0</span></p>
@@ -57,10 +58,17 @@
         </div>
 
         <!-- 💵 Final Result -->
-        <div class="section main_result">
-            <h3> 💵 Final Result </h3>
-            <p class="main_result"> <span id="month_final_amount">0</span></p>
-        </div>
+        <p class="main_result">
+			💵 Final Result: <span id="month_final_amount">0</span>
+			<span class="tooltip">
+				<i class="fas fa-info-circle"></i>
+				<span class="tooltiptext">Includes: hourly income, tips, and bonuses</span>
+			</span>
+		</p>
+
+        <div class="button-row">
+            <button id="closeMonthButton" class="action-button close">📦 Close Month</button>
+		</div>
     
     </div>    
 

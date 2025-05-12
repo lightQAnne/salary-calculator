@@ -8,8 +8,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
-}
+    }
 
 /* ==============================
    CONTAINER STYLES
@@ -21,7 +20,8 @@ body {
     background: rgb(250, 228, 212);
     border-radius: 25px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
+    overflow: visible;
+    }
 
 /* ==============================
    SECTION STYLES (Income, Car Earnings)
@@ -33,20 +33,28 @@ body {
     border-radius: 15px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 	transition: transform 0.2s ease-in-out;
-}
+    }
 
 .section:hover {
     transform: scale(1.02); 
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
+    }
 
 .income {
     background-color: #e8f6ff;
-}
+    }
 
 .car_earnings {
-    background-color: #ecdff8;
-}
+    background-color: #eeddfd;
+    }
+
+.summary_box{
+    background-color: #e2f9f2f7;
+    }
+
+.bonuses_box{
+    background-color: #fff4acf7;
+    }
 
 /* ==============================
    TITLE STYLES
@@ -117,52 +125,56 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .main_result {
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin: 2rem 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem;
+    gap: 6px;
 }
   
 .tooltip {
     position: relative;
     display: inline-block;
     cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
 }
-  
+
 .tooltip i {
-    font-size: 1rem;
     color: #666;
-    margin-left: 3px;
-    margin-bottom: 15px;
+    position: relative;
+    top: 1px;
 }
-  
+
 .tooltiptext {
+    max-width: 180px;
+    white-space: normal; 
     visibility: hidden;
-    width: 140px;
+    width: 220px;
     background-color: #333;
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 5px 8px;
+    padding: 6px 10px;
     position: absolute;
-    z-index: 1;
-    bottom: 125%; 
+    z-index: 10;
+    bottom: 120%; /* или 110% если обрезает */
     left: 50%;
-    margin-left: -70px;
+    transform: translateX(-50%);
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s ease;
     font-size: 0.75rem;
 }
-  
+
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
 }
   
 /* ==============================
-   ACTION BUTTONS: SAVE + CLEAR
+   ACTION BUTTONS: SAVE, CLEAR
    ============================== */
 
 .button-row {
@@ -176,9 +188,9 @@ input[type="number"]::-webkit-inner-spin-button {
     flex: 1;
     padding: 12px;
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 500;
     border: none;
-    border-radius: 15px;
+    border-radius: 17px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
@@ -189,41 +201,29 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .action-button i {
-    font-size: 15px;
+    font-size: 20px;
 }
 
 /* Save */
 #saveButton {
-    background-color: #50D890;
-    color: rgb(255, 255, 255);
+    background-color: rgb(205, 241, 194);
 }
 
 #saveButton:hover {
-    background-color: #46f78d;
+    background-color: #84c894;
     transform: scale(1.03);
-    color: rgb(0, 0, 0);
+    color: rgb(227, 253, 213);
 }
 
 /* Clear */
 #clearButton {
-    background-color: #f4867e;
-    color: rgb(255, 255, 255);
+    background-color: #f6f3f3;
 }
 
 #clearButton:hover {
-    background-color: #ff4441;
+    background-color: #eb7977;
     transform: scale(1.03);
-    color: rgb(0, 0, 0);
-}
-
-@keyframes hintShake {
-    0% { transform: translateX(0); }
-    15% { transform: translateX(-3px) rotate(-1deg); }
-    30% { transform: translateX(3px) rotate(1deg); }
-    45% { transform: translateX(-3px) rotate(-1deg); }
-    60% { transform: translateX(3px) rotate(1deg); }
-    75% { transform: translateX(-2px) rotate(-0.5deg); }
-    100% { transform: translateX(0); }
+    color: rgb(249, 207, 207);
 }
 
 /* ==============================
@@ -236,29 +236,34 @@ input[type="number"]::-webkit-inner-spin-button {
     gap: 6px;
     background: #f0f0f0;
     color: #333;
-    padding: 6px 12px;
+    padding: 8px 20px;
     border-radius: 999px;
     font-weight: 500;
     font-size: 0.95rem;
     text-decoration: none;
     transition: background 0.3s ease;
+    justify-content: center;
 }
 
-  .back-button:hover {
+.back-button:hover {
     background: #e0e0e0;
 }
 
-  .back-button i {
+.back-button i {
     font-size: 1rem;
 }
   
 /* ==============================
+   ==============================
+
    MONTH SUMMARY PAGE * CALENDAR
+   
+   ============================== 
    ============================== */
 
 .calendar-container {
-    background-color: #4fc3f7;
-    padding: 20px;
+    background-color: #96d2ee;
+    padding: 17px;
     border-radius: 15px;
     margin-bottom: 30px;
 }
@@ -282,7 +287,7 @@ input[type="number"]::-webkit-inner-spin-button {
     padding: 5px 8px;
     font-size: 15px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     background-color: white;
     color: #333;
     box-shadow: 0 1px 4px rgba(0,0,0,0.15);
@@ -305,7 +310,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .calendar-table th {
-    background-color: #4fc3f7;
+    background-color: #6bc2eb;
     color: white;
     padding: 10px;
     font-weight: bold;
@@ -343,6 +348,21 @@ input[type="number"]::-webkit-inner-spin-button {
     top: 6px;
     right: 6px;
 }
+
 .calendar-day {
     position: relative;
+}
+
+/* ==============================
+   ACTION BUTTONS: CLOSE
+   ============================== */
+
+/* Close */
+#closeMonthButton {
+    background-color: #ffffff;
+}
+
+#closeMonthButton:hover {
+    background-color: #bbfac5;
+    transform: scale(1.03);
 }
