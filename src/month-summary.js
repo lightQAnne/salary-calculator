@@ -13,14 +13,54 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🧮 Calculations
     // ==============================
 
+    //bonus per order
+    function getBonusMultiplier(orderCount, isWeekend) {
+        if (orderCount < 50) return 0;
+        if (orderCount < 125) return 1;
+        if (orderCount < 250) return isWeekend ? 2 : 1;
+        if (orderCount < 400) return isWeekend ? 3 : 1.5;
+        if (orderCount < 550) return isWeekend ? 4 : 2;
+        return isWeekend ? 5 : 2.5;
+    }
+
+    async function calculateBonusPerOrder(monthId) {
+        const prefix = `${monthId}-`;
+        const snapshot = await db.collection("monthData").get();
+
+        let monThuOrders = 0;
+        let friSunOrders = 0;
+
+        snapshot.docs.forEach(doc => {
+            if (doc.id.startsWith(prefix)) {
+                const data = doc.data();
+                const dayOfWeek = new Date(doc.id).getDay(); // 0=Sun, 1=Mon...
+
+                const orders = data.orders || 0;
+                if (dayOfWeek >= 1 && dayOfWeek <= 4) {
+                    monThuOrders += orders;
+                } else {
+                    friSunOrders += orders;
+                }
+            }
+        });
+
+        const monThuMultiplier = getBonusMultiplier(monThuOrders, false);
+        const friSunMultiplier = getBonusMultiplier(friSunOrders, true);
+
+        console.log("📦 Bonus Order Breakdown:");
+        console.log(`🗓️  Mon–Thu Orders: ${monThuOrders} × ${monThuMultiplier} = ${monThuOrders * monThuMultiplier}`);
+        console.log(`🗓️  Fri–Sun Orders: ${friSunOrders} × ${friSunMultiplier} = ${friSunOrders * friSunMultiplier}`);
+
+        return +(monThuOrders * monThuMultiplier + friSunOrders * friSunMultiplier).toFixed(2);
+    }
+
     function calculateBonuses(summary) {
         const hours = summary.totalWorkingHours || 0;
         const bonusPerOrder = summary.bonusPerOrder || 0;
         const laundryBonus = +(hours * 0.10).toFixed(2);
         const phoneBonus = hours >= 40 ? 25.00 : +(hours * 0.62).toFixed(2);
-        const totalBonus = +(laundryBonus + phoneBonus + bonusPerOrder).toFixed(2);
 
-        return { laundryBonus, phoneBonus, bonusPerOrder, totalBonus };
+        return { laundryBonus, phoneBonus, bonusPerOrder };
     }
 
     async function closeMonth() {
@@ -36,7 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 return alert("📦 This month has already been closed.");
             }
 
-            const bonuses = calculateBonuses(summary);
+            const bonusPerOrder = await calculateBonusPerOrder(monthId);
+            const bonuses = calculateBonuses({ ...summary, bonusPerOrder });
 
             await monthRef.update({
                 ...bonuses,
@@ -78,13 +119,12 @@ document.addEventListener("DOMContentLoaded", () => {
             };
     
             // 💡 Calculate or use saved bonuses
-            const bonuses = summary.laundryBonus !== undefined
-                ? {
-                    laundryBonus: summary.laundryBonus,
-                    phoneBonus: summary.phoneBonus,
-                    bonusPerOrder: summary.bonusPerOrder,
-                }
-                : calculateBonuses(summary);
+            const liveBonusPerOrder = summary.closedAt
+                ? summary.bonusPerOrder
+                : await calculateBonusPerOrder(monthId);
+
+            const bonuses = calculateBonuses({ ...summary, bonusPerOrder: liveBonusPerOrder });
+
 
             updateText("total_working_hours", summary.totalWorkingHours || 0, " h");
             updateText("total_orders", summary.totalOrders || 0);
@@ -93,13 +133,17 @@ document.addEventListener("DOMContentLoaded", () => {
             updateText("total_car_income", (summary.totalCarIncome || 0).toFixed(2), " PLN");
             updateText("total_km", summary.totalKilometers || 0, " km");
 
-            const baseFinalAmount = summary.totalFinalAmount || 0;
-            const adjustedFinalAmount = (baseFinalAmount + bonuses.totalBonus).toFixed(2);
-            updateText("month_final_amount", adjustedFinalAmount, " PLN");
-
+            updateText("bonus_per_order", bonuses.bonusPerOrder.toFixed(2), " zł");
             updateText("washing_bonus", bonuses.laundryBonus.toFixed(2), " zł");
             updateText("phone_usage_bonus", bonuses.phoneBonus.toFixed(2), " zł");
-            updateText("bonus_per_order", bonuses.bonusPerOrder.toFixed(2), " zł");
+
+            const baseFinal = summary.totalFinalAmount || 0;
+            const totalBonuses = summary.closedAt
+                ? 0
+                : bonuses.bonusPerOrder + bonuses.laundryBonus + bonuses.phoneBonus;
+
+            const adjustedFinalAmount = (baseFinal + totalBonuses).toFixed(2);
+            updateText("month_final_amount", adjustedFinalAmount, " PLN");
     
         } catch (error) {
             console.error(`❌ Failed to load summary for ${monthId}:`, error);
