@@ -174,7 +174,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
   
 /* ==============================
-   ACTION BUTTONS: SAVE, CLEAR
+   ACTION BUTTONS: BACK, SAVE, CLEAR
    ============================== */
 
 .button-row {
@@ -198,10 +198,41 @@ input[type="number"]::-webkit-inner-spin-button {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    text-decoration: none;
 }
 
 .action-button i {
     font-size: 20px;
+    text-align: center;
+}
+
+/* Back */
+#backButton {
+    background-color: #f0f0f0;
+}
+
+#backButton:hover {
+    background-color: #969696;
+    transform: scale(1.03);
+    color: rgb(210, 209, 209);
+}
+
+/* Clear */
+#clearButton {
+    background-color: #fbc1c1;
+    width: 45px;
+    height: 45px;
+    border-radius: 40%;
+    padding: 0;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#clearButton:hover {
+    background-color: #eb7977;
+    transform: scale(1.03);
+    color: rgb(249, 207, 207);
 }
 
 /* Save */
@@ -215,44 +246,6 @@ input[type="number"]::-webkit-inner-spin-button {
     color: rgb(227, 253, 213);
 }
 
-/* Clear */
-#clearButton {
-    background-color: #f6f3f3;
-}
-
-#clearButton:hover {
-    background-color: #eb7977;
-    transform: scale(1.03);
-    color: rgb(249, 207, 207);
-}
-
-/* ==============================
-   BACK BUTTON
-   ============================== */
-
-.back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #f0f0f0;
-    color: #333;
-    padding: 8px 20px;
-    border-radius: 999px;
-    font-weight: 500;
-    font-size: 0.95rem;
-    text-decoration: none;
-    transition: background 0.3s ease;
-    justify-content: center;
-}
-
-.back-button:hover {
-    background: #e0e0e0;
-}
-
-.back-button i {
-    font-size: 1rem;
-}
-  
 /* ==============================
    ==============================
 

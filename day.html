@@ -16,9 +16,7 @@
 </head>
 <body>
     <div class="container">
-		<div class="header">
-			<a href="month.html" class="back-button"><i class="fas fa-arrow-left"></i></a>
-
+		<div class="header">			
 			<h2 class="page-title" id="page-title"></h2>
 		</div>
 
@@ -78,14 +76,25 @@
 		</p>
 
 		<div class="button-row">
-			<button id="clearButton" class="action-button clear">Clear</button>
-			<button id="saveButton" class="action-button save">Save</button>
-		</div>
-		
+			<a href="month.html" id="backButton" class="action-button back" 
+				aria-label="Go back to month view" title="Back to Month"> 
+				<i class="fa-solid fa-arrow-left-long"></i>
+			</a>
+
+			<button id="clearButton" class="action-button clear" 
+				aria-label="Clear current day data" title="Clear Day">
+				<i class="fa-solid fa-trash-arrow-up"></i>
+			</button>
+
+			<button id="saveButton" class="action-button save" 
+				aria-label="Save day report" title="Save Day">
+				<i class="fa-solid fa-save"></i>
+			</button>
+		</div>	
     </div>
 	
 	<script src="src/firebase-config.js" defer></script>
-	<script src="src/day-summary.js" defer></script>
+	<script type="module" src="src/day-summary.js" defer></script>
 
 </body>
 </html>

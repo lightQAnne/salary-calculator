@@ -1,11 +1,25 @@
 // ==============================
+// 📦 Imports
+// ==============================
+
+import {
+  parseNumeric,
+  calculateNetEarnings,
+  getFullDayId,
+  validateNumericInput,
+  ensureMonthExists,
+  getSelectedDateFromURL,
+  recalculateMonthSummary
+} from './shared/utils.js';
+
+// ==============================
 // 📄 Day Summary Logic
 // ==============================
 
 document.addEventListener("DOMContentLoaded", () => {
 
     // ==============================
-    // 🔢 Form elements
+    // 🧾 Element References & Events
     // ==============================
 
     const hourlyRateInput = document.getElementById("hourly_rate");
@@ -20,29 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (clearButton) clearButton.addEventListener("click", clearDayData);
     if (saveButton) saveButton.addEventListener("click", saveDayData);
     
-    // ==============================
-    // 🔧 Utilities
-    // ==============================
+    [workingHoursInput, ordersCountInput, tipsInput, kmPerDayInput, fuelPriceInput]
+    .forEach(input => input.addEventListener("keypress", validateNumericInput));
 
-    const validateNumericInput = (event) => {
-        const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", ".", ","];
-        if (!/[0-9]/.test(event.key) && !allowedKeys.includes(event.key)) {
-            event.preventDefault();
-        }
-    };
-
-    function parseNumeric(value, fallback = 0) {
-    const raw = typeof value === "string" ? value : value.value;
-    const parsed = parseFloat(raw.replace(',', '.'));
-    return isNaN(parsed) ? fallback : parsed;
-    }
-
-    [workingHoursInput, ordersCountInput, tipsInput, kmPerDayInput, fuelPriceInput].forEach(input => {
-        input.addEventListener("keypress", validateNumericInput);
-    });
+    document.addEventListener("input", calculate);
 
     // ==============================
-    // 🧮 Calculations
+    // 🧮 Earnings Calculation
     // ==============================
 
     function calculate() {
@@ -83,35 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
         setText("day_final_amount", finalAmount);
     }
 
-    function calculateNetEarnings(grossEarnings) {
-        const emerytalne = grossEarnings * 0.0976; // 9.76%
-        const rentowe = grossEarnings * 0.015; // 1.5%
-        const wypadkowe = grossEarnings * 0.0167; // 1.67%
-        const zdrowotne = grossEarnings * 0.09; // 9%
-        const chorobowe = grossEarnings * 0.0245; // 2.45% 
-
-        const totalDeductions = emerytalne + rentowe + wypadkowe + zdrowotne + chorobowe;
-        return grossEarnings - totalDeductions;
-    }
-
-    document.addEventListener("input", calculate);
-    calculate();
-
     // ==============================
-    // 🔁 Firebase: Save, Load, Clear
+    // 🔁 Firebase: Save / Load / Clear
     // ==============================
-
-    function getFullDayId() {
-        const params = new URLSearchParams(window.location.search);
-        const dateParam = params.get("date");
-        if (dateParam) return dateParam;
-    
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = (today.getMonth() + 1).toString().padStart(2, "0");
-        const day = today.getDate().toString().padStart(2, "0");
-        return `${year}-${month}-${day}`;
-    }
 
     async function saveDayData() {
         if (!window.db) return alert("❌ Firebase not initialized!");
@@ -163,27 +135,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("❌ Error saving data:", error);
             alert("Error saving data to Firebase.");
-        }
-    }
-
-    async function ensureMonthExists(monthId) {
-        if (!window.db) return;
-    
-        const ref = db.collection("monthSummary").doc(monthId);
-        const doc = await ref.get();
-    
-        if (!doc.exists) {
-            await ref.set({
-                totalOrders: 0,
-                totalFuelCost: 0,
-                totalCarIncome: 0,
-                totalFinalAmount: 0,
-                totalKilometers: 0,
-                totalWorkingHours: 0,
-                tips: 0,
-                month: monthId
-            });
-            console.log(`🆕 Initialized month: ${monthId}`);
         }
     }
 
@@ -239,62 +190,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    async function recalculateMonthSummary(monthId = null) {
-        if (!window.db) return;
-    
-        if (!monthId) {
-            const date = new Date();
-            monthId = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}`;
-        }
-    
-        const prefix = `${monthId}-`;
-    
-        try {
-            const snapshot = await db.collection("monthData").get();
-            let summary = {
-                totalOrders: 0,
-
-                totalFuelCost: 0,
-                totalCarIncome: 0,
-                totalFinalAmount: 0,
-                totalKilometers: 0,
-                totalWorkingHours: 0,
-                tips: 0,
-                month: monthId
-            };
-    
-            snapshot.docs.forEach(doc => {
-                if (doc.id.startsWith(prefix)) {
-                    const data = doc.data();
-                    summary.totalOrders += data.orders || 0;
-                    summary.totalFuelCost += data.fuelCost || 0;
-                    summary.totalCarIncome += data.carIncome || 0;
-                    summary.totalFinalAmount += data.finalAmount || 0;
-                    summary.totalKilometers += data.kilometers || 0;
-                    summary.totalWorkingHours += data.workingHours || 0;
-                    summary.tips += data.tips || 0;
-                }
-            });
-    
-            await db.collection("monthSummary").doc(monthId).set(summary);
-            console.log("♻️ Recalculated summary for:", monthId, summary);
-        } catch (error) {
-            console.error("❌ Error recalculating:", error);
-        }
-    }    
-
     // ==============================
-    // 🗓️ Title Initialization
+    // 📅 Title & Fuel Data
     // ==============================
-    
-    const getSelectedDateFromURL = () => {
-        const params = new URLSearchParams(window.location.search);
-        return params.get("date") || null;
-    };
 
     const selectedDate = getSelectedDateFromURL();
     if (selectedDate) {
-        loadDayData(selectedDate); //load from Firebase;
+        loadDayData(selectedDate);
         loadFuelPriceForDate(selectedDate);
 
         const parts = selectedDate.split("-");
@@ -306,46 +208,43 @@ document.addEventListener("DOMContentLoaded", () => {
         if (titleElement) titleElement.innerText = title;
     }
 
-    // ==============================
-    // 🗓️ Fuel Price
-    // ==============================
-
     async function loadFuelPriceForDate(dateStr) {
-    if (!window.db || !dateStr) return;
+        if (!window.db || !dateStr) return;
 
-    const snapshot = await db.collection("fuelHistory").get();
-    const entries = [];
+        const snapshot = await db.collection("fuelHistory").get();
+        const entries = [];
 
-    snapshot.forEach(doc => {
-        if (doc.exists) {
-            entries.push({ date: doc.id, price: doc.data().price });
-        }
-    });
-
-    entries.sort((a, b) => b.date.localeCompare(a.date));
-
-        for (const entry of entries) {
-            if (entry.date <= dateStr) {
-                const input = document.getElementById("fuel_price");
-                if (input && !input.value) {
-                    input.value = entry.price.toFixed(2);
-
-                    const tooltip = document.getElementById("fuel_price_tooltip");
-                    const tooltipText = document.getElementById("fuel_price_tooltip_text");
-
-                    if (tooltip && tooltipText) {
-                        const parsedDate = new Date(entry.date);
-                        const dateStr = parsedDate.toLocaleDateString('en-GB', {
-                            day: 'numeric',
-                            month: 'short'
-                        });
-                        tooltipText.innerHTML = `Price auto-filled from: <br> ${dateStr}`;
-                        tooltip.style.display = 'inline-block';
-                    }
-                }
-                break;
+        snapshot.forEach(doc => {
+            if (doc.exists) {
+                entries.push({ date: doc.id, price: doc.data().price });
             }
-        }
+        });
+
+        entries.sort((a, b) => b.date.localeCompare(a.date));
+
+            for (const entry of entries) {
+                if (entry.date <= dateStr) {
+                    const input = document.getElementById("fuel_price");
+                    if (input && !input.value) {
+                        input.value = entry.price.toFixed(2);
+
+                        const tooltip = document.getElementById("fuel_price_tooltip");
+                        const tooltipText = document.getElementById("fuel_price_tooltip_text");
+
+                        if (tooltip && tooltipText) {
+                            const parsedDate = new Date(entry.date);
+                            const dateStr = parsedDate.toLocaleDateString('en-GB', {
+                                day: 'numeric',
+                                month: 'short'
+                            });
+                            tooltipText.innerHTML = `Price auto-filled from: <br> ${dateStr}`;
+                            tooltip.style.display = 'inline-block';
+                        }
+                    }
+                    break;
+                }
+            }
     }
 
+    calculate();
 });
