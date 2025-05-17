@@ -1,16 +1,24 @@
-document.addEventListener("DOMContentLoaded", () => {
+// ==============================
+// 📦 Imports
+// ==============================
 
+import { getCurrentMonthId } from './shared/utils.js';
+
+// ==============================
+// 📊 Month Summary Logic
+// ==============================
+
+document.addEventListener("DOMContentLoaded", () => {
     
     // ==============================
-    // 🔢 Form elements
+    // 🔘 UI Element References
     // ==============================
 
     const closeMonthButton = document.getElementById("closeMonthButton");
-
     if (closeMonthButton) closeMonthButton.addEventListener("click", closeMonth);
 
     // ==============================
-    // 🧮 Calculations
+    //  🧮 Bonus Calculation Logic
     // ==============================
 
     //bonus per order
@@ -63,6 +71,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return { laundryBonus, phoneBonus, bonusPerOrder };
     }
 
+    // ==============================
+    // 🔁 Firebase: Close Month
+    // ==============================
+
     async function closeMonth() {
         const monthId = getCurrentMonthId();
         const monthRef = db.collection("monthSummary").doc(monthId);
@@ -94,12 +106,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==============================
-    // 🔁 Fetches and updates monthly summary data from Firebase
+    // 📊 Load Month Summary to UI
     // ==============================
-
-    function getCurrentMonthId() {
-        return new Date().toISOString().slice(0, 7);
-    }
 
     window.loadMonthSummary = async function (monthId = null) {
         if (!window.db) return console.error("❌ Firebase not initialized!");
@@ -151,9 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     // ==============================
-    // 🚀 Initiates summary loading after DOM is ready
+    // 🚀 Init on Load
     // ==============================
 
     loadMonthSummary();
-
 });
