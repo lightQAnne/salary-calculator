@@ -12,7 +12,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>	
 </head>
-<body>
+<body class="month-page">
     <div class="container">
         <h2 class="page-title" id="page-title">Monthly Salary Overview</h2>
     
@@ -33,47 +33,60 @@
             </table>
         </div>
     
-        <!-- 📊 Month Summary -->
-        <div class="section summary_box">
-            <h3>📊 Month Summary</h3>
-            <p>Working hours: <span id="total_working_hours">0</span></p>
-            <p>Number of orders: <span id="total_orders">0</span></p>
-            <p>Tips total: <span id="month_tips">0</span></p>
-        </div>
+        <div class="summary-row">
+            <!-- 📊 Month Summary -->
+            <div class="section summary_box">
+                <h3>Month Summary</h3>
 
-        <!-- 🎁 Bonuses -->
-        <div class="section bonuses_box">
-            <h3>🎁 Bonuses</h3>
-            <p>Bonus per order: <span id="bonus_per_order">0</span></p>
-            <p>Washing: <span id="washing_bonus">0</span></p>
-            <p>Phone: <span id="phone_usage_bonus">0</span></p>
+                <p>Hours: <span id="total_working_hours">0</span></p>
+                <p>Orders: <span id="total_orders">0</span></p>
+                <p>Tips: <span id="month_tips">0</span></p>
+            </div>
+
+            <!-- 🎁 Bonuses -->
+            <div class="section bonuses_box">
+                <h3>Bonuses</h3>
+
+                <p>Per order: <span id="bonus_per_order">0</span></p>
+                <p>Washing: <span id="washing_bonus">0</span></p>
+                <p>Phone: <span id="phone_usage_bonus">0</span></p>
+            </div>
         </div>
 
         <!-- 🚗 Car Summary -->
         <div class="section car_earnings">
-            <h3>🚗 Car Summary</h3>
+            <h3>Car Summary</h3>
+
             <p>Fuel cost: <span id="total_fuel_cost">0</span></p>
             <p>Kilometers: <span id="total_km">0</span></p>
-            <p>Car income: <span id="total_car_income">0</span></p>
+            <div class="income-line">
+				<hr>
+				<span class="income-label">Income:</span> 
+				<span id="total_car_income">0.00 PLN</span>
+			</div>
         </div>
 
         <!-- 💵 Final Result -->
         <p class="main_result">
-			💵 Final Result: <span id="month_final_amount">0</span>
+			Final Result: <span id="month_final_amount">0</span>
+
 			<span class="tooltip">
 				<i class="fas fa-info-circle"></i>
-				<span class="tooltiptext">Includes: hourly income, tips, and bonuses</span>
+				<span class="tooltiptext">Includes (net): hourly income, tips, and bonuses</span>
 			</span>
 		</p>
 
         <div class="button-row">
-            <button id="closeMonthButton" class="action-button close">📦 Close Month</button>
+            <button id="closeMonthButton" class="action-button close" 
+				aria-label="Close month report" title="Close month">
+				<i class="fa-solid fa-box-archive"></i>
+			</button>
 		</div>
     
     </div>    
 
     <script src="src/firebase-config.js" defer></script>
-    <script src="src/calendar.js" defer></script>
+    <script type="module" src="src/calendar.js" defer></script>
     <script type="module" src="src/month-summary.js" defer></script>
 </body>
 </html>

@@ -48,6 +48,48 @@ export function calculateNetEarnings(grossEarnings) {
 // ------------------------------------------
 
 /*
+ * Returns 'date' param from URL in YYYY-MM format.
+ * If not provided, defaults to current month (YYYY-MM).
+ */
+export function getMonthFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const date = params.get("date");
+  return date || getCurrentMonthId();
+}
+
+/*
+ * Returns current month in YYYY-MM format.
+ */
+export function getCurrentMonthId() {
+  return new Date().toISOString().slice(0, 7);
+}
+
+/*
+ * Formats a given year/month as YYYY-MM.
+ */
+export function getMonthValue(year, month) {
+  return `${year}-${(month + 1).toString().padStart(2, "0")}`;
+}
+
+/*
+ * Updates the browser URL with the selected month (YYYY-MM).
+ */
+export function updateURL(monthId) {
+  const url = new URL(window.location);
+  url.searchParams.set("date", monthId);
+  window.history.replaceState({}, "", url);
+}
+
+/*
+ * Returns 'date' param from URL in YYYY-MM-DD format.
+ * Used on day.html. If not present, returns null.
+ */
+export function getSelectedDateFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("date") || null;
+}
+
+/*
  * Returns selected date from URL or today's date in YYYY-MM-DD format.
  */
 export function getFullDayId() {
@@ -65,18 +107,25 @@ export function getFullDayId() {
 }
 
 /*
- * Returns 'date' param from URL or null.
+ * Returns full date string in YYYY-MM-DD format from year, month, day.
  */
-export function getSelectedDateFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("date") || null;
+export function createFullDayId(year, month, day) {
+  return `${year}-${(month + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
 }
 
 /*
- * Returns current month in YYYY-MM format.
+ * Returns offset to align calendar start to Monday (0–6).
  */
-export function getCurrentMonthId() {
-  return new Date().toISOString().slice(0, 7);
+export function getStartDayOffset(year, month) {
+  return (new Date(year, month, 1).getDay() + 6) % 7;
+}
+
+/*
+ * Returns true if provided year/month is the current month.
+ */
+export function isCurrentMonth(year, month) {
+  const today = new Date();
+  return year === today.getFullYear() && month === today.getMonth();
 }
 
 // ------------------------------------------

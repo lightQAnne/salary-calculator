@@ -16,12 +16,17 @@ body {
    
 .container {
     width: 360px;
-    padding: 20px;
+    max-width: 480px;
+    padding: 30px;
     background: rgb(250, 228, 212);
     border-radius: 25px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     overflow: visible;
     }
+
+.month-page .container {
+    width: 375px;
+}
 
 /* ==============================
    SECTION STYLES (Income, Car Earnings)
@@ -40,7 +45,7 @@ body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
-.income {
+.input {
     background-color: #e8f6ff;
     }
 
@@ -48,13 +53,56 @@ body {
     background-color: #eeddfd;
     }
 
+.income-line {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+    padding-top: 15px;
+    position: relative;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.income-line::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #999;
+    opacity: 0.5;
+}
+
+.income-label {
+    color: #666;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding-top: 2px;
+}
+
 .summary_box{
-    background-color: #e2f9f2f7;
+    background-color: #ccfaf3f7;
     }
 
 .bonuses_box{
     background-color: #fff4acf7;
     }
+
+.summary-row {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.summary_box,
+.bonuses_box {
+    flex: 1;
+    min-width: 0;
+}
 
 /* ==============================
    TITLE STYLES
@@ -325,10 +373,21 @@ input[type="number"]::-webkit-inner-spin-button {
     background-color: #e1f5fe;
 }
 
-.calendar-day.today {
+.calendar-day span {
+    display: inline-block;
+    width: 33px;
+    height: 33px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.9rem;
+}
+
+.calendar-day span.today {
     background-color: #0288d1;
     color: white;
-    border-radius: 50%;
+    font-weight: bold;
+    border-radius: 70%;
 }
 
 .calendar-day.has-data::after {
@@ -352,10 +411,19 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* Close */
 #closeMonthButton {
-    background-color: #ffffff;
+    background-color: #fce4ec;
+    border-radius: 17px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #closeMonthButton:hover {
-    background-color: #bbfac5;
+    background-color: #f8bbd0;
     transform: scale(1.03);
+    color: #333;
 }
