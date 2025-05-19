@@ -2,7 +2,10 @@
 // 📦 Imports
 // ==============================
 
-import { getCurrentMonthId } from './shared/utils.js';
+import { 
+    getCurrentMonthId,
+    calculateNetEarnings
+} from './shared/utils.js';
 
 // ==============================
 // 📊 Month Summary Logic
@@ -68,7 +71,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const laundryBonus = +(hours * 0.10).toFixed(2);
         const phoneBonus = hours >= 40 ? 25.00 : +(hours * 0.62).toFixed(2);
 
-        return { laundryBonus, phoneBonus, bonusPerOrder };
+        return {
+        bonusPerOrder: calculateNetEarnings(bonusPerOrder),
+        laundryBonus: calculateNetEarnings(laundryBonus),
+        phoneBonus: calculateNetEarnings(phoneBonus)
+        };
     }
 
     // ==============================

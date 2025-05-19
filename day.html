@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculation of wages</title>
+	<title>Calculator / Day Overview</title>
 
+	<link rel="icon" href="/public/icons/calculator_main_icon.ico">
     <link rel="stylesheet" href="public/styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	
@@ -21,7 +22,7 @@
 		</div>
 
 		<!-- 📄 Earnings Input -->
-        <div class="section income">
+        <div class="section input">
             <h3>Earnings Input</h3>
 			
             <div class="input-group">
@@ -60,9 +61,13 @@
             <h3>Car Earnings</h3>
             
 			<div class="expenses-card">	
-				<p>Earnings from orders (car): <span id="net_order_earnings">0</span></p>
+				<p>Earnings from orders: <span id="net_order_earnings">0</span></p>
 				<p>Fuel cost: <span id="fuel_cost">0</span></p>
-				<p>Car income: <span id="car_income">0</span></p>
+				<div class="income-line">
+					<hr>
+					<span class="income-label">Income:</span> 
+					<span id="car_income">0.00 PLN</span>
+				</div>
 			</div>
         </div>
 		

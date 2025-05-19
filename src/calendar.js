@@ -1,24 +1,17 @@
+// ==============================
+// 📦 Imports
+// ==============================
+
+import {
+  getMonthFromURL,
+  updateURL,
+  getMonthValue,
+  createFullDayId,
+  getStartDayOffset,
+  isCurrentMonth
+} from './shared/utils.js';
+
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // ==============================
-    // 📅 Utilities
-    // ==============================
-
-    function getCurrentMonthId() {
-        return new Date().toISOString().slice(0, 7);
-    }
-
-    function getMonthFromURL() {
-        const params = new URLSearchParams(window.location.search);
-        const date = params.get("date");
-        return date || getCurrentMonthId();
-    }
-
-    function updateURL(monthId) {
-        const url = new URL(window.location);
-        url.searchParams.set("date", monthId);
-        window.history.replaceState({}, "", url);
-    }
     
     // ==============================
     // 📌 Mark days with data
@@ -53,12 +46,15 @@ document.addEventListener("DOMContentLoaded", () => {
             return cell;
         }
     
-        cell.innerText = day;
+        const span = document.createElement("span");
+        span.innerText = day;
+        cell.appendChild(span);
+
         cell.classList.add("calendar-day");
         cell.setAttribute("data-day", day);
         
         if (isToday) {
-            cell.classList.add("today");
+            span.classList.add("today");
         }
     
         cell.addEventListener("click", () => {
@@ -73,9 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
         calendarBody.innerHTML = "";
     
         const today = new Date();
-        const isCurrentMonth = year === today.getFullYear() && month === today.getMonth();
+        const isCurrent = isCurrentMonth(year, month);
         const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const startDay = (new Date(year, month, 1).getDay() + 6) % 7;
+        const startDay = getStartDayOffset(year, month);
     
         let currentDate = 1;
     
@@ -89,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if ((week === 0 && dayIndex < startDay) || currentDate > daysInMonth) {
                     cell = createCalendarCell({ day: null });
                 } else {
-                    const fullDayId = `${year}-${(month + 1).toString().padStart(2, "0")}-${currentDate.toString().padStart(2, "0")}`;
+                    const fullDayId = createFullDayId(year, month, currentDate);
                     const isToday = isCurrentMonth && currentDate === today.getDate();
     
                     cell = createCalendarCell({
@@ -117,10 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 📅 Month selector
     // ==============================
 
-    function getMonthValue(year, month) {
-        return `${year}-${(month + 1).toString().padStart(2, "0")}`;
-    }
-    
     function createMonthOption(value, label) {
         const option = document.createElement("option");
         option.value = value;
@@ -135,9 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const startYear = 2025;
         const now = new Date();
         const currentYear = now.getFullYear();
-        const currentMonth = now.getMonth();
-    
-        selector.appendChild(createMonthOption("currentMonth", "Current Month"));
+        const currentMonth = now.getMonth(); // 0-based (0 = Jan)
     
         for (let year = startYear; year <= currentYear; year++) {
             const maxMonth = (year === currentYear) ? currentMonth : 11;
@@ -148,6 +138,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 selector.appendChild(createMonthOption(value, label));
             }
         }
+
+        selector.value = getMonthFromURL();
     }    
 
     // ==============================
@@ -160,10 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Returns the selected month ID in format YYYY-MM
     function getSelectedMonthId() {
-        const selected = selector.value;
-        return selected === "currentMonth"
-            ? getCurrentMonthId()
-            : selected;
+    return selector.value;
     }
     
     // Draws calendar for the selected month
@@ -186,10 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     const initialMonth = getMonthFromURL();
-    selector.value = initialMonth === getCurrentMonthId()
-        ? "currentMonth"
-        : initialMonth;
-
+    selector.value = initialMonth;
     updateMonthView();
 
     selector.addEventListener("change", updateMonthView);
