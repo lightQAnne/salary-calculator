@@ -140,10 +140,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const bonuses = calculateBonuses({ ...summary, bonusPerOrder: liveBonusPerOrder });
 
+            const bruttoTips = summary.tips || 0;
+            const nettoTips = calculateNetEarnings(bruttoTips);
 
             updateText("total_working_hours", summary.totalWorkingHours || 0, " h");
             updateText("total_orders", summary.totalOrders || 0);
-            updateText("month_tips", (summary.tips || 0).toFixed(2), " PLN");
+            updateText("month_tips", nettoTips.toFixed(2), " PLN");
             updateText("total_fuel_cost", (summary.totalFuelCost || 0).toFixed(2), " PLN");
             updateText("total_car_income", (summary.totalCarIncome || 0).toFixed(2), " PLN");
             updateText("total_km", summary.totalKilometers || 0, " km");
