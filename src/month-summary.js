@@ -25,13 +25,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==============================
 
     //bonus per order
-    function getBonusMultiplier(orderCount, isWeekend) {
-        if (orderCount < 50) return 0;
-        if (orderCount < 125) return 1;
-        if (orderCount < 250) return isWeekend ? 2 : 1;
-        if (orderCount < 400) return isWeekend ? 3 : 1.5;
-        if (orderCount < 550) return isWeekend ? 4 : 2;
-        return isWeekend ? 5 : 2.5;
+    const BONUS_TIERS = [
+        { min: 0, weekday: 0, weekend: 0 },
+        { min: 50, weekday: 1, weekend: 1 },
+        { min: 125, weekday: 1, weekend: 2 },
+        { min: 250, weekday: 1.5, weekend: 3 },
+        { min: 400, weekday: 2, weekend: 4 },
+        { min: 550, weekday: 2.5, weekend: 5 },
+    ];
+
+    function getBonusLevel(totalOrders) {
+        let tier = BONUS_TIERS[0];
+        for (const t of BONUS_TIERS) {
+            if (totalOrders >= t.min) {
+                tier = t;
+            } else {
+                break;
+            }
+        }
+        return tier;
     }
 
     async function calculateBonusPerOrder(monthId) {
@@ -45,8 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (doc.id.startsWith(prefix)) {
                 const data = doc.data();
                 const dayOfWeek = new Date(doc.id).getDay(); // 0=Sun, 1=Mon...
-
                 const orders = data.orders || 0;
+
                 if (dayOfWeek >= 1 && dayOfWeek <= 4) {
                     monThuOrders += orders;
                 } else {
@@ -55,14 +67,18 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        const monThuMultiplier = getBonusMultiplier(monThuOrders, false);
-        const friSunMultiplier = getBonusMultiplier(friSunOrders, true);
+        const totalOrders = monThuOrders + friSunOrders;
+        const bonusLevel = getBonusLevel(totalOrders);
+
+        const monThuBonus = monThuOrders * bonusLevel.weekday;
+        const friSunBonus = friSunOrders * bonusLevel.weekend;
+        const totalBonus = +(monThuBonus + friSunBonus).toFixed(2);
 
         console.log("📦 Bonus Order Breakdown:");
-        console.log(`🗓️  Mon–Thu Orders: ${monThuOrders} × ${monThuMultiplier} = ${monThuOrders * monThuMultiplier}`);
-        console.log(`🗓️  Fri–Sun Orders: ${friSunOrders} × ${friSunMultiplier} = ${friSunOrders * friSunMultiplier}`);
-
-        return +(monThuOrders * monThuMultiplier + friSunOrders * friSunMultiplier).toFixed(2);
+        console.log(`➡️  Mon–Thu: ${monThuOrders} × ${bonusLevel.weekday} = ${monThuBonus}`);
+        console.log(`➡️  Fri–Sun: ${friSunOrders} × ${bonusLevel.weekend} = ${friSunBonus}`);
+        
+        return totalBonus;
     }
 
     function calculateBonuses(summary) {
