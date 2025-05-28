@@ -173,6 +173,7 @@ export async function recalculateMonthSummary(monthId = null) {
     const snapshot = await db.collection("monthData").get();
     let summary = {
       totalOrders: 0,
+      totalNetOrderEarnings: 0,
       totalFuelCost: 0,
       totalCarIncome: 0,
       totalFinalAmount: 0,
@@ -186,6 +187,7 @@ export async function recalculateMonthSummary(monthId = null) {
       if (doc.id.startsWith(prefix)) {
         const data = doc.data();
         summary.totalOrders += data.orders || 0;
+        summary.totalNetOrderEarnings += data.netOrderEarnings || 0;
         summary.totalFuelCost += data.fuelCost || 0;
         summary.totalCarIncome += data.carIncome || 0;
         summary.totalFinalAmount += data.finalAmount || 0;
@@ -200,4 +202,22 @@ export async function recalculateMonthSummary(monthId = null) {
   } catch (error) {
     console.error("❌ Error recalculating:", error);
   }
+}
+
+// ------------------------------------------
+// 📊 Calculated Value Helpers
+// ------------------------------------------
+
+export function setCalculatedValue(id, value) {
+    const el = document.getElementById(id);
+    if (el) {
+        const str = value.toFixed(2);
+        el.dataset.value = str;
+        el.innerText = `${str} PLN`;
+    }
+}
+
+export function getCalculatedValue(id) {
+    const el = document.getElementById(id);
+    return el?.dataset.value ? parseFloat(el.dataset.value) || 0 : 0;
 }

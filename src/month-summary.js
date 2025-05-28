@@ -161,6 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             updateText("total_working_hours", summary.totalWorkingHours || 0, " h");
             updateText("total_orders", summary.totalOrders || 0);
+            updateText("total_net_order_earnings", (summary.totalNetOrderEarnings || 0).toFixed(2), " PLN");
             updateText("month_tips", nettoTips.toFixed(2), " PLN");
             updateText("total_fuel_cost", (summary.totalFuelCost || 0).toFixed(2), " PLN");
             updateText("total_car_income", (summary.totalCarIncome || 0).toFixed(2), " PLN");

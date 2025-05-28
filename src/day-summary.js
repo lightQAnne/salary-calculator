@@ -9,7 +9,9 @@ import {
   validateNumericInput,
   ensureMonthExists,
   getSelectedDateFromURL,
-  recalculateMonthSummary
+  recalculateMonthSummary,
+  setCalculatedValue,
+  getCalculatedValue
 } from './shared/utils.js';
 
 // ==============================
@@ -45,15 +47,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function calculate() {
         const hourlyRate = parseFloat(hourlyRateInput.value) || 30.50;
-        const orderRate = 5.50; // To-do: make editable?
-        const workingHours = Math.max(parseNumeric(workingHoursInput), 0);
-        const orderCount = Math.max(parseNumeric(ordersCountInput), 0);
-        const tips = Math.max(parseNumeric(tipsInput), 0);
-        const kmPerDay = Math.max(parseNumeric(kmPerDayInput), 0);;
+        const workingHours = Math.max(parseNumeric(workingHoursInput.value), 0);
+        const orderCount = Math.max(parseNumeric(ordersCountInput.value), 0);
+        const tips = Math.max(parseNumeric(tipsInput.value), 0);
+        const kmPerDay = Math.max(parseNumeric(kmPerDayInput.value), 0);
 
         // gross
         const dayHourlyGrossEarnings = workingHours * hourlyRate;
-        const grossOrderEarnings = orderCount * orderRate;
+        const grossOrderEarnings = orderCount * 5.50;
 
         // net
         const dayHourlyNetEarnings = calculateNetEarnings(dayHourlyGrossEarnings);
@@ -61,24 +62,22 @@ document.addEventListener("DOMContentLoaded", () => {
         const netTipsApp = calculateNetEarnings(tips);
 
         // car
-        const fuelPrice = parseNumeric(fuelPriceInput);
+        const fuelPrice = parseNumeric(fuelPriceInput.value);
         const avgConsumption = 7.0;
         const costPerKm = (fuelPrice * avgConsumption) / 100;
         const fuelCost = kmPerDay * costPerKm;
 
         const carIncome = netOrderEarnings - fuelCost;
-
         const finalAmount = dayHourlyNetEarnings + netTipsApp;
 
-        const setText = (id, value) => {
-            const el = document.getElementById(id);
-            if (el) el.innerText = value.toFixed(2) + " PLN";
-        };
-    
-        setText("net_order_earnings", netOrderEarnings);
-        setText("fuel_cost", fuelCost);
-        setText("car_income", carIncome);
-        setText("day_final_amount", finalAmount);
+        console.log("🧪 orderCount =", orderCount);
+        console.log("🧪 grossOrderEarnings =", grossOrderEarnings);
+        console.log("🧪 netOrderEarnings =", netOrderEarnings);
+
+        setCalculatedValue("net_order_earnings", netOrderEarnings);
+        setCalculatedValue("fuel_cost", fuelCost);
+        setCalculatedValue("car_income", carIncome);
+        setCalculatedValue("day_final_amount", finalAmount);
     }
 
     // ==============================
@@ -104,19 +103,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         workingHours = Math.max(workingHours, 0);
     
-        const getValue = (id) => {
-            const el = document.getElementById(id);
-            return el ? parseFloat(el.innerText) || 0 : 0;
-        };
-    
         const dayData = {
-            workingHours: workingHours,
+            workingHours,
             orders: parseFloat(ordersCountInput.value) || 0,
             tips: parseFloat(tipsInput.value) || 0,
-            fuelCost: getValue("fuel_cost"),
-            carIncome: getValue("car_income"),
-            kilometers: parseFloat(kmPerDayInput.value) || 0,
-            finalAmount: getValue("day_final_amount")
+            fuelPrice: parseNumeric(fuelPriceInput),
+            fuelCost: getCalculatedValue("fuel_cost"),
+            netOrderEarnings: getCalculatedValue("net_order_earnings"),
+            carIncome: getCalculatedValue("car_income"),
+            finalAmount: getCalculatedValue("day_final_amount"),
+            kilometers: parseFloat(kmPerDayInput.value) || 0
         };
     
         try {
@@ -153,8 +149,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 workingHoursInput.value = data.workingHours || "";
                 kmPerDayInput.value = data.kilometers || "";
                 tipsInput.value = data.tips || "";
-    
+                fuelPriceInput.value = data.fuelPrice?.toFixed(2) || "";
+
+                setCalculatedValue("net_order_earnings", data.netOrderEarnings || 0);
+                setCalculatedValue("fuel_cost", data.fuelCost || 0);
+                setCalculatedValue("car_income", data.carIncome || 0);
+                setCalculatedValue("day_final_amount", data.finalAmount || 0);
+
                 calculate();
+
             } else {
                 console.log("🆕 No data for:", date);
             }

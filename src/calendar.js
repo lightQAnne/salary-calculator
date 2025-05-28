@@ -69,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
         calendarBody.innerHTML = "";
     
         const today = new Date();
-        const isCurrent = isCurrentMonth(year, month);
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const startDay = getStartDayOffset(year, month);
     
@@ -86,7 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     cell = createCalendarCell({ day: null });
                 } else {
                     const fullDayId = createFullDayId(year, month, currentDate);
-                    const isToday = isCurrentMonth && currentDate === today.getDate();
+                    const isToday =
+                        isCurrentMonth(year, month) &&
+                        currentDate === today.getDate();
     
                     cell = createCalendarCell({
                         day: currentDate,
@@ -134,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
             for (let month = 0; month <= maxMonth; month++) {
                 const value = getMonthValue(year, month);
-                const label = `${value} — ${new Date(year, month).toLocaleString("en", { month: "long" })}`;
+                const label = value;
                 selector.appendChild(createMonthOption(value, label));
             }
         }
@@ -164,6 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Redraws calendar and updates summary
     function updateMonthView() {
+        updatePageTitleFromMonthId(selector.value);
         const monthId = getSelectedMonthId();
         updateCalendar();
     
@@ -179,5 +181,12 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMonthView();
 
     selector.addEventListener("change", updateMonthView);
+
+    function updatePageTitleFromMonthId(monthId) {
+        const [year, month] = monthId.split("-");
+        const monthName = new Date(`${monthId}-01`).toLocaleString("en", { month: "long" });
+        const titleEl = document.getElementById("page-title");
+        if (titleEl) titleEl.innerText = `Income · ${monthName} ${year}`;
+    }
 
 });
