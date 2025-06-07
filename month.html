@@ -15,80 +15,85 @@
 </head>
 <body class="month-page">
     <div class="container">
-        <h2 class="page-title" id="page-title">Monthly Salary Overview</h2>
-    
-        <!-- 📅 calendar -->
-        <div class="calendar-container">
-            <div class="calendar-controls">
-                <select id="monthSelector"></select>
-            </div>
-            <table class="calendar-table">
-                <thead>
-                    <tr>
-                        <th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th>
-                    </tr>
-                </thead>
-                <tbody id="calendar-body">
-                    <!-- JS generates days -->
-                </tbody>
-            </table>
-        </div>
-    
-        <div class="summary-row">
-            <!-- 📊 Month Summary -->
-            <div class="section summary_box">
-                <h3>Month</h3>
-
-                <p>Hours: <span id="total_working_hours">0</span></p>
-                <p>Orders: <span id="total_orders">0</span></p>
-                <p>Tips: <span id="month_tips">0</span></p>
-            </div>
-
-            <!-- 🎁 Bonuses -->
-            <div class="section bonuses_box">
-                <h3>Bonuses</h3>
-
-                <p>Orders: <span id="bonus_per_order">0</span></p>
-                <p>Washing: <span id="washing_bonus">0</span></p>
-                <p>Phone: <span id="phone_usage_bonus">0</span></p>
-            </div>
-        </div>
-
-        <!-- 🚗 Car Summary -->
-        <div class="section car_earnings">
-            <h3>Car</h3>
-
-            <p>Earnings from orders: <span id="total_net_order_earnings">0</span></p>
-            <p>Fuel: <span id="total_fuel_cost">0</span></p>
-            <p>Kilometers: <span id="total_km">0</span></p>
-            <div class="income-line">
-				<hr>
-				<span class="income-label">Income:</span> 
-				<span id="total_car_income">0.00 PLN</span>
-			</div>
-        </div>
-
-        <!-- 💵 Final Result -->
-        <p class="main_result">
-			Final Result: <span id="month_final_amount">0</span>
-
-			<span class="tooltip">
-				<i class="fas fa-info-circle"></i>
-				<span class="tooltiptext">Includes (net): hourly income, tips, and bonuses</span>
-			</span>
-		</p>
-
-        <div class="button-row">
-            <button id="closeMonthButton" class="action-button close" 
-				aria-label="Close month report" title="Close month">
-				<i class="fa-solid fa-box-archive"></i>
-			</button>
+        <!-- Header -->
+        <div class="header">			
+			<h2 class="page-title" id="page-title"></h2>
 		</div>
-    
+        <!-- Main Content -->
+         <main>
+            <!-- Calendar -->
+            <div class="calendar-container">
+                <div class="calendar-controls">
+                    <select id="monthSelector"></select>
+                </div>
+                <table class="calendar-table">
+                    <thead>
+                        <tr>
+                            <th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body">
+                        <!-- JS generates days -->
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="summary-row">
+                <!-- Month Summary -->
+                <section class="section summary_box">
+                    <h3>Summary</h3>
+
+                    <p>Hours: <span id="total_working_hours">0</span></p>
+                    <p>Orders: <span id="total_orders">0</span></p>
+                    <p>Tips: <span id="month_tips">0</span></p>
+                </section>
+
+                <!-- Bonuses -->
+                <section class="section bonuses_box">
+                    <h3>Bonuses</h3>
+
+                    <p>Orders: <span id="bonus_per_order">0</span></p>
+                    <p>Washing: <span id="washing_bonus">0</span></p>
+                    <p>Phone: <span id="phone_usage_bonus">0</span></p>
+                </section>
+            </div>
+
+            <!-- Car Summary -->
+            <section class="section car_earnings_box">
+                <h3>Car</h3>
+
+                <p>Earnings from orders: <span id="total_net_order_earnings">0</span></p>
+                <p>Fuel: <span id="total_fuel_cost">0</span></p>
+                <p>Kilometers: <span id="total_km">0</span></p>
+                <div class="income-line">
+                    <span class="income-label">Income:</span> 
+                    <span id="total_car_income">0.00 PLN</span>
+                </div>
+            </section>
+
+            <!-- Final Result -->
+            <div class="section total_block">
+                Total: <span id="month_final_amount">0</span>
+
+                <span class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltiptext">Includes (net): hourly income, tips, and bonuses</span>
+                </span>
+            </div>
+
+            <!-- Buttons -->
+            <div type="button" class="button-row">
+                <button id="closeMonthButton" class="action-button close" 
+                    aria-label="Close month report" title="Close month">
+                    <i class="fa-solid fa-box-archive"></i>
+                </button>
+            </div>
+        </main>
     </div>    
 
     <script src="src/firebase-config.js" defer></script>
     <script type="module" src="src/calendar.js" defer></script>
     <script type="module" src="src/month-summary.js" defer></script>
+
 </body>
 </html>
