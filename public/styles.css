@@ -1,6 +1,4 @@
-/* ==============================
-   GLOBAL STYLES
-   ============================== */
+/* ============ RESET & GLOBAL ============ */
    
 body {
     font-family: Arial, sans-serif;
@@ -10,9 +8,7 @@ body {
     align-items: center;
     }
 
-/* ==============================
-   CONTAINER STYLES
-   ============================== */
+/* ============ LAYOUT (container, main, header) ============ */
    
 .container {
     width: 360px;
@@ -24,34 +20,118 @@ body {
     overflow: visible;
     }
 
-.month-page .container {
-    width: 375px;
+ .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0.2rem 0.2rem 1rem;
+    }
+
+/* ============ TYPOGRAPHY & TITLES ============ */
+   
+
+
+.section h3 {
+    min-height: 18px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid #b4aeae;
+    padding-bottom: 4px;
+    text-align: center;
+    margin: 0 auto;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.1);
 }
 
-/* ==============================
-   SECTION STYLES (Income, Car Earnings)
-   ============================== */
-   
+.page-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0f0f0f;
+    text-align: center;
+    flex: 1;
+    margin: 0.2rem 0.2rem 0.2rem;
+}
+
+/* ============ FORM INPUTS ============ */
+
+.earnings_input {
+    background-color: #e8f6ff;
+}
+
+.input-group {
+	display: flex;
+	align-items: center;
+	margin: 8px 0;
+	gap: 12px;
+	justify-content: flex-start; 
+    flex-direction: row;
+}
+
+.input-group input {
+	width: 70px;
+	border: 1px solid #777;
+	border-radius: 15px;
+	padding: 5px;
+	text-align: center;
+	line-height: 1.2;
+}
+
+.input-group label {
+	font-size: 0.92rem;
+	color: #444;
+	white-space: nowrap;
+	line-height: 1.2;
+	margin: 0;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ============ SECTIONS (income, car, bonuses...) ============ */
+
 .section {
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 15px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 	transition: transform 0.2s ease-in-out;
-    }
+}
 
 .section:hover {
     transform: scale(1.02); 
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
+}
 
-.input {
-    background-color: #e8f6ff;
-    }
-
-.car_earnings {
+.car_earnings_box {
     background-color: #eeddfd;
-    }
+}
+
+.summary_box{
+    background-color: #e9f1fc;
+}
+
+.bonuses_box{
+    background-color: #fef6c4;
+}
+
+.summary-row {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.summary_box,
+.bonuses_box {
+    flex: 1;
+    min-width: 0;
+    margin: 0 2px;
+}
+
+/* ============ RESULT BLOCKS (income-line, total) ============ */
 
 .income-line {
     display: flex;
@@ -83,105 +163,22 @@ body {
     padding-top: 2px;
 }
 
-.summary_box{
-    background-color: #ccfaf3f7;
-    }
-
-.bonuses_box{
-    background-color: #fff4acf7;
-    }
-
-.summary-row {
-    display: flex;
-    gap: 12px;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+.total_block {
+  background-color: #f1f6e9;
+  border-radius: 15px;
+  padding: 10px 12px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #1e432e;
+  border: none;
+  text-shadow: 0 1px #fff;
 }
 
-.summary_box,
-.bonuses_box {
-    flex: 1;
-    min-width: 0;
-    margin: 0 5px;
-}
 
-/* ==============================
-   TITLE STYLES
-   ============================== */
+/* ============ TOOLTIP ============ */
 
-.section h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    border-bottom: 1px solid #b4aeae;
-    padding-bottom: 4px;
-    text-align: center;
-    margin: 0 auto;
-    text-shadow: 0 1px 0 rgba(0,0,0,0.1);
-}
-
-.page-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #0f0f0f;
-    text-align: center;
-    flex: 1;
-}
-
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 0.2rem 0.2rem 1rem;
-}
-
-/* ==============================
-   FORM STYLES (Input Groups)
-   ============================== */
-
-.input-group {
-    display: flex; 
-    align-items: center;
-    margin: 7px 0;
-}
-
-.input-group input {
-    border: 1px solid #777;
-    border-radius: 15px;
-    padding: 5px;
-    width: 70px;
-    text-align: center;
-    box-sizing: border-box;
-	margin-right: 15px;
-	margin-left: 10px;
-}
-
-.input-description {
-    font-size: 16px;
-    color: #666;
-    text-align: center; 
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* ==============================
-   MAIN RESULT STYLES (Income, Car Earnings, Total)
-   ============================== */
-
-.main_result {
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin: 2rem 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-}
-  
 .tooltip {
     position: relative;
     display: inline-block;
@@ -222,9 +219,7 @@ input[type="number"]::-webkit-inner-spin-button {
     opacity: 1;
 }
   
-/* ==============================
-   ACTION BUTTONS: BACK, SAVE, CLEAR
-   ============================== */
+/* ============ BUTTONS ============ */
 
 .button-row {
     display: flex;
@@ -295,19 +290,32 @@ input[type="number"]::-webkit-inner-spin-button {
     color: rgb(227, 253, 213);
 }
 
-/* ==============================
-   ==============================
+/* Close */
+#closeMonthButton {
+    background-color: #fce4ec;
+    border-radius: 17px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-   MONTH SUMMARY PAGE * CALENDAR
-   
-   ============================== 
-   ============================== */
+#closeMonthButton:hover {
+    background-color: #f8bbd0;
+    transform: scale(1.03);
+    color: #333;
+}
+
+/* ============ CALENDAR ============ */
 
 .calendar-container {
-    background-color: #96d2ee;
-    padding: 17px;
+    background-color: #d3e4ec93;
+    padding: 15px;
     border-radius: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .calendar-controls {
@@ -315,44 +323,30 @@ input[type="number"]::-webkit-inner-spin-button {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-    padding: 0 5px;
-    gap: 10px;
-}
-
-#selectedMonthLabel {
-    font-size: 17px;
-    font-weight: 700;
-    color: rgb(7, 0, 0);
 }
 
 #monthSelector {
-    padding: 5px 8px;
+    padding: 5px 10px;
     font-size: 15px;
-    border: none;
-    border-radius: 10px;
-    background-color: white;
+    border: 15px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.958);
     color: #333;
     box-shadow: 0 1px 4px rgba(0,0,0,0.15);
     cursor: pointer;
-}
-
-#selectedMonthName {
-    font-size: 16px;
-    font-weight: 600;
-    color: white;
 }
 
 /* calendar table */
 .calendar-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: white;
+    background-color: rgb(248, 252, 253);
     border-radius: 15px;
     overflow: hidden;
 }
 
 .calendar-table th {
-    background-color: #6bc2eb;
+    background-color: #a1bac6e3;
     color: white;
     padding: 10px;
     font-weight: bold;
@@ -360,7 +354,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .calendar-table td {
     width: 40px;
-    height: 40px;
+    height: 25px;
     text-align: center;
     vertical-align: middle;
     border: 1px solid #e0e0e0;
@@ -378,14 +372,14 @@ input[type="number"]::-webkit-inner-spin-button {
     display: inline-block;
     width: 33px;
     height: 33px;
-    line-height: 22px;
+    line-height: 33px;
     text-align: center;
     border-radius: 50%;
     font-size: 0.9rem;
 }
 
 .calendar-day span.today {
-    background-color: #0288d1;
+    background-color: #60b4fde9;
     color: white;
     font-weight: bold;
     border-radius: 70%;
@@ -404,27 +398,4 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .calendar-day {
     position: relative;
-}
-
-/* ==============================
-   ACTION BUTTONS: CLOSE
-   ============================== */
-
-/* Close */
-#closeMonthButton {
-    background-color: #fce4ec;
-    border-radius: 17px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#closeMonthButton:hover {
-    background-color: #f8bbd0;
-    transform: scale(1.03);
-    color: #333;
 }

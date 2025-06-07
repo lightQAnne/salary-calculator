@@ -15,87 +15,100 @@
 	<script src="https://unpkg.com/lucide@latest"></script>
 	
 </head>
-<body>
+<body class="day-page">
     <div class="container">
+		<!-- Header -->
 		<div class="header">			
 			<h2 class="page-title" id="page-title"></h2>
 		</div>
+		<!-- Main Content -->
+		<main>
+			<!-- Earnings Input / Income -->
+			<section class="section earnings_input">
+				<h3>Day Earnings</h3>
 
-		<!-- 📄 Earnings Input -->
-        <div class="section input">
-            <h3>Earnings Input</h3>
-			
-            <div class="input-group">
-				<input type="number" id="hourly_rate" value="30.50">
-				<span class="input-description">hourly rate (gross)</span>
-			</div>
-            <div class="input-group">
-				<input type="number" id="working_hours" placeholder="hours">
-				<span class="input-description">working hours</span>
-			</div>
-            <div class="input-group">
-				<input type="number" id="orders_count" placeholder="orders">
-				<span class="input-description">number of orders</span>
-			</div>
-			<div class="input-group">
-				<input type="number" id="tips" placeholder="zł">
-				<span class="input-description">tips</span>
-			</div>
-			<div class="input-group">
-				<input type="number" id="km_per_day" placeholder="km">
-				<span class="input-description">daily kilometers</span>
-			</div>
-			<div class="input-group">
-				<input type="number" id="fuel_price" placeholder="zł/l" step="0.01">
-				<span class="input-description">fuel price</span>
-					<span class="tooltip" id="fuel_price_tooltip" style="display: none;">
+				<div class="input-group">
+				<input type="number" id="hourly_rate" value="30.50" />
+				<label for="hourly_rate">Hourly rate (gross)</label>
+				</div>
+
+				<div class="input-group">
+				<input type="number" id="working_hours" placeholder="hours" />
+				<label for="working_hours">Working hours</label>
+				</div>
+
+				<div class="input-group">
+				<input type="number" id="orders_count" placeholder="orders" />
+				<label for="orders_count">Number of orders</label>
+				</div>
+
+				<div class="input-group">
+				<input type="number" id="tips" placeholder="zł" />
+				<label for="tips">Tips</label>
+				</div>
+
+				<div class="input-group">
+				<input type="number" id="km_per_day" placeholder="km" />
+				<label for="km_per_day">Daily kilometers</label>
+				</div>
+
+				<div class="input-group">
+					<input type="number" id="fuel_price" placeholder="zł/l" step="0.01" />
+					<label for="fuel_price">
+						Fuel price
+						<span class="tooltip" id="fuel_price_tooltip" style="display: none;">
 						<i class="fas fa-info-circle"></i>
 						<span class="tooltiptext" id="fuel_price_tooltip_text">placeholder</span>
-					</span>
-			</div>
-
-        </div>
-		
-		<!-- 🚗 Car Earnings -->
-        <div class="section car_earnings">
-            <h3>Car Earnings</h3>
-            
-			<div class="expenses-card">	
-				<p>Earnings from orders: <span id="net_order_earnings">0</span></p>
-				<p>Fuel cost: <span id="fuel_cost">0</span></p>
-				<div class="income-line">
-					<hr>
-					<span class="income-label">Income:</span> 
-					<span id="car_income">0.00 PLN</span>
+						</span>
+					</label>
 				</div>
+
+			</section>
+			
+			<!-- Car Earnings -->
+			<section class="section car_earnings_box">
+				<h3>Car</h3>
+				
+				<div class="expenses-card">	
+					<p>Earnings from orders: <span id="net_order_earnings">0</span></p>
+					<p>Fuel cost: <span id="fuel_cost">0</span></p>
+					<div class="income-line">
+						<span class="income-label">Income:</span> 
+						<span id="car_income">0.00 PLN</span>
+					</div>
+				</div>
+			</section>
+			
+			<!-- Final Result -->
+			<div class="section total_block">
+				Total: <span id="day_final_amount">0</span>
+
+				<span class="tooltip">
+					<i class="fas fa-info-circle"></i>
+					<span class="tooltiptext">Net earnings from hourly rate + tips (excluding car income)</span>
+				</span>
 			</div>
-        </div>
-		
-		<!-- 💵 Final Result -->
-        <p class="main_result">
-			Final earnings: <span id="day_final_amount">0</span>
-			<span class="tooltip">
-				<i class="fas fa-info-circle"></i>
-				<span class="tooltiptext">Net earnings from hourly rate + tips (excluding car income)</span>
-			</span>
-		</p>
 
-		<div class="button-row">
-			<a href="month.html" id="backButton" class="action-button back" 
-				aria-label="Go back to month view" title="Back to Month"> 
-				<i class="fa-solid fa-arrow-left-long"></i>
-			</a>
+			<!-- Buttons -->
+			<div class="button-row">
 
-			<button id="clearButton" class="action-button clear" 
-				aria-label="Clear current day data" title="Clear Day">
-				<i class="fa-solid fa-trash-arrow-up"></i>
-			</button>
+				<a href="month.html" type="button" id="backButton" class="action-button back" 
+					aria-label="Go back to month view" title="Back to Month"> 
+					<i class="fa-solid fa-arrow-left-long"></i>
+				</a>
 
-			<button id="saveButton" class="action-button save" 
-				aria-label="Save day report" title="Save Day">
-				<i class="fa-solid fa-save"></i>
-			</button>
-		</div>	
+				<button type="button" id="clearButton" class="action-button clear" 
+					aria-label="Clear current day data" title="Clear Day">
+					<i class="fa-solid fa-trash-arrow-up"></i>
+				</button>
+
+				<button type="button" id="saveButton" class="action-button save" 
+					aria-label="Save day report" title="Save Day">
+					<i class="fa-solid fa-save"></i>
+				</button>
+
+			</div>
+		</main>	
     </div>
 	
 	<script src="src/firebase-config.js" defer></script>
