@@ -2,10 +2,14 @@
 // 📦 Imports
 // ==============================
 
-import { 
-    getCurrentMonthId,
-    calculateNetEarnings
+import {
+  getCurrentMonthId
 } from './shared/utils.js';
+
+import {
+  calculateNetEarnings,
+  getBonusLevel
+} from './shared/calculations.js';
 
 // ==============================
 // 📊 Month Summary Logic
@@ -23,28 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==============================
     //  🧮 Bonus Calculation Logic
     // ==============================
-
-    //bonus per order
-    const BONUS_TIERS = [
-        { min: 0, weekday: 0, weekend: 0 },
-        { min: 50, weekday: 1, weekend: 1 },
-        { min: 125, weekday: 1, weekend: 2 },
-        { min: 250, weekday: 1.5, weekend: 3 },
-        { min: 400, weekday: 2, weekend: 4 },
-        { min: 550, weekday: 2.5, weekend: 5 },
-    ];
-
-    function getBonusLevel(totalOrders) {
-        let tier = BONUS_TIERS[0];
-        for (const t of BONUS_TIERS) {
-            if (totalOrders >= t.min) {
-                tier = t;
-            } else {
-                break;
-            }
-        }
-        return tier;
-    }
 
     async function calculateBonusPerOrder(monthId) {
         const prefix = `${monthId}-`;
@@ -99,7 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==============================
 
     async function closeMonth() {
-        const monthId = getCurrentMonthId();
+        const selector = document.getElementById("monthSelector");
+        const monthId = selector?.value || getCurrentMonthId();
+
         const monthRef = db.collection("monthSummary").doc(monthId);
 
         try {
@@ -150,11 +134,23 @@ document.addEventListener("DOMContentLoaded", () => {
             };
     
             // 💡 Calculate or use saved bonuses
-            const liveBonusPerOrder = summary.closedAt
-                ? summary.bonusPerOrder
-                : await calculateBonusPerOrder(monthId);
+            let bonuses = {
+                bonusPerOrder: 0,
+                laundryBonus: 0,
+                phoneBonus: 0
+                };
 
-            const bonuses = calculateBonuses({ ...summary, bonusPerOrder: liveBonusPerOrder });
+                if (summary.closedAt) {
+                    bonuses.bonusPerOrder = summary.bonusPerOrder || 0;
+                    bonuses.laundryBonus = summary.laundryBonus || 0;
+                    bonuses.phoneBonus = summary.phoneBonus || 0;
+                } else {
+                    const liveBonusPerOrder = await calculateBonusPerOrder(monthId);
+                    bonuses = calculateBonuses({
+                        ...summary,
+                        bonusPerOrder: liveBonusPerOrder
+                    });
+            }
 
             const bruttoTips = summary.tips || 0;
             const nettoTips = calculateNetEarnings(bruttoTips);
@@ -163,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
             updateText("total_orders", summary.totalOrders || 0);
             updateText("total_net_order_earnings", (summary.totalNetOrderEarnings || 0).toFixed(2), " PLN");
             updateText("month_tips", nettoTips.toFixed(2), " PLN");
-            updateText("total_fuel_cost", (summary.totalFuelCost || 0).toFixed(2), " PLN");
+            updateText("total_fuel_cost", `–${(summary.totalFuelCost || 0).toFixed(2)}`, " PLN");
             updateText("total_car_income", (summary.totalCarIncome || 0).toFixed(2), " PLN");
             updateText("total_km", summary.totalKilometers || 0, " km");
 
@@ -172,13 +168,11 @@ document.addEventListener("DOMContentLoaded", () => {
             updateText("phone_usage_bonus", bonuses.phoneBonus.toFixed(2), " zł");
 
             const baseFinal = summary.totalFinalAmount || 0;
-            const totalBonuses = summary.closedAt
-                ? 0
-                : bonuses.bonusPerOrder + bonuses.laundryBonus + bonuses.phoneBonus;
+            const totalBonuses = bonuses.bonusPerOrder + bonuses.laundryBonus + bonuses.phoneBonus;
 
             const adjustedFinalAmount = (baseFinal + totalBonuses).toFixed(2);
             updateText("month_final_amount", adjustedFinalAmount, " PLN");
-    
+        
         } catch (error) {
             console.error(`❌ Failed to load summary for ${monthId}:`, error);
         }

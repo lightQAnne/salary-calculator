@@ -2,17 +2,30 @@
 // 📦 Imports
 // ==============================
 
+import { 
+    DEFAULT_AVG_CONSUMPTION, 
+    DEFAULT_HOURLY_RATE,
+    ORDER_RATE
+} from './shared/config.js';
+
 import {
-  parseNumeric,
-  calculateNetEarnings,
-  getFullDayId,
-  validateNumericInput,
-  ensureMonthExists,
-  getSelectedDateFromURL,
-  recalculateMonthSummary,
-  setCalculatedValue,
-  getCalculatedValue
+    parseNumeric,
+    calculateNetEarnings,
+    getFullDayId,
+    validateNumericInput,
+    getSelectedDateFromURL,
 } from './shared/utils.js';
+
+import {
+    ensureMonthExists,
+    recalculateMonthSummary
+ 
+} from './shared/firebase-helpers.js';
+
+import {
+    setCalculatedValue,
+    getCalculatedValue
+} from './shared/dom-utils.js';
 
 // ==============================
 // 📄 Day Summary Logic
@@ -46,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==============================
 
     function calculate() {
-        const hourlyRate = parseFloat(hourlyRateInput.value) || 30.50;
+        const hourlyRate = parseFloat(hourlyRateInput.value) || DEFAULT_HOURLY_RATE;
         const workingHours = Math.max(parseNumeric(workingHoursInput.value), 0);
         const orderCount = Math.max(parseNumeric(ordersCountInput.value), 0);
         const tips = Math.max(parseNumeric(tipsInput.value), 0);
@@ -54,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // gross
         const dayHourlyGrossEarnings = workingHours * hourlyRate;
-        const grossOrderEarnings = orderCount * 5.50;
+        const grossOrderEarnings = orderCount * ORDER_RATE;
 
         // net
         const dayHourlyNetEarnings = calculateNetEarnings(dayHourlyGrossEarnings);
@@ -63,8 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // car
         const fuelPrice = parseNumeric(fuelPriceInput.value);
-        const avgConsumption = 7.0;
-        const costPerKm = (fuelPrice * avgConsumption) / 100;
+        const costPerKm = (fuelPrice * DEFAULT_AVG_CONSUMPTION) / 100;
         const fuelCost = kmPerDay * costPerKm;
 
         const carIncome = netOrderEarnings - fuelCost;
