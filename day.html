@@ -23,71 +23,73 @@
 		</div>
 		<!-- Main Content -->
 		<main>
-			<!-- Earnings Input / Income -->
-			<section class="section earnings_input">
-				<h3>Day Earnings</h3>
+			<div class="ledge-wrapper-day">
+				
+				<section class="section earnings_input">
+					<h3>Day Earnings</h3>
 
-				<div class="input-group">
-				<input type="number" id="hourly_rate" value="30.50" />
-				<label for="hourly_rate">Hourly rate (gross)</label>
+					<div class="input-group">
+					<input type="number" id="hourly_rate" value="30.50" />
+					<label for="hourly_rate">hourly (gross)</label>
+					</div>
+
+					<div class="input-group">
+					<input type="number" id="working_hours" placeholder="hours" />
+					<label for="working_hours">hours</label>
+					</div>
+
+					<div class="input-group">
+					<input type="number" id="orders_count" placeholder="orders" />
+					<label for="orders_count">orders</label>
+					</div>
+
+					<div class="input-group">
+					<input type="number" id="tips" placeholder="zł" />
+					<label for="tips">tips</label>
+					</div>
+
+					<div class="input-group">
+					<input type="number" id="km_per_day" placeholder="km" />
+					<label for="km_per_day">kilometers</label>
+					</div>
+
+					<div class="input-group">
+						<input type="number" id="fuel_price" placeholder="zł/l" step="0.01" />
+						<label for="fuel_price">
+							fuel price
+							<span class="tooltip" id="fuel_price_tooltip" style="display: none;">
+							<i class="fas fa-info-circle"></i>
+							<span class="tooltiptext" id="fuel_price_tooltip_text">placeholder</span>
+							</span>
+						</label>
+					</div>
+
+				</section>
+
+				<!-- Final Result -->
+				<div class="ledge-tab-day">
+					Total: <span id="day_final_amount">0</span>
+					<span class="tooltip">
+					<i class="fas fa-info-circle"></i>
+					<span class="tooltiptext">Hourly + tips (net, excl. car)</span>
+					</span>
 				</div>
 
-				<div class="input-group">
-				<input type="number" id="working_hours" placeholder="hours" />
-				<label for="working_hours">Working hours</label>
-				</div>
-
-				<div class="input-group">
-				<input type="number" id="orders_count" placeholder="orders" />
-				<label for="orders_count">Number of orders</label>
-				</div>
-
-				<div class="input-group">
-				<input type="number" id="tips" placeholder="zł" />
-				<label for="tips">Tips</label>
-				</div>
-
-				<div class="input-group">
-				<input type="number" id="km_per_day" placeholder="km" />
-				<label for="km_per_day">Daily kilometers</label>
-				</div>
-
-				<div class="input-group">
-					<input type="number" id="fuel_price" placeholder="zł/l" step="0.01" />
-					<label for="fuel_price">
-						Fuel price
-						<span class="tooltip" id="fuel_price_tooltip" style="display: none;">
-						<i class="fas fa-info-circle"></i>
-						<span class="tooltiptext" id="fuel_price_tooltip_text">placeholder</span>
-						</span>
-					</label>
-				</div>
-
-			</section>
-			
+			</div>
+						
 			<!-- Car Earnings -->
 			<section class="section car_earnings_box">
 				<h3>Car</h3>
 				
 				<div class="expenses-card">	
-					<p>Earnings from orders: <span id="net_order_earnings">0</span></p>
-					<p>Fuel cost: <span id="fuel_cost">0</span></p>
+					<p>Orders: <span id="net_order_earnings">0</span></p>
+					<p>Fuel: <span id="fuel_cost">0</span></p>
 					<div class="income-line">
-						<span class="income-label">Income:</span> 
+						<span class="income-label">Car income:</span> 
 						<span id="car_income">0.00 PLN</span>
 					</div>
 				</div>
 			</section>
-			
-			<!-- Final Result -->
-			<div class="section total_block">
-				Total: <span id="day_final_amount">0</span>
-
-				<span class="tooltip">
-					<i class="fas fa-info-circle"></i>
-					<span class="tooltiptext">Net earnings from hourly rate + tips (excluding car income)</span>
-				</span>
-			</div>
 
 			<!-- Buttons -->
 			<div class="button-row">

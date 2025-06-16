@@ -183,4 +183,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==============================
 
     loadMonthSummary();
+
+    // ==============================
+    // 📅 Go to Today Button
+    // ==============================
+    const goToTodayButton = document.getElementById("goToToday");
+
+    if (goToTodayButton) {
+        goToTodayButton.addEventListener("click", () => {
+            const today = new Date().toISOString().split("T")[0];
+            window.location.href = `day.html?date=${today}`;
+        });
+    }
+
 });

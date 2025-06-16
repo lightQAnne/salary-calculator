@@ -38,24 +38,37 @@
                 </table>
             </div>
         
-            <div class="summary-row">
-                <!-- Month Summary -->
-                <section class="section summary_box">
-                    <h3>Summary</h3>
+            <div class="ledge-wrapper-month">
 
-                    <p>Hours: <span id="total_working_hours">0</span></p>
-                    <p>Orders: <span id="total_orders">0</span></p>
-                    <p>Tips: <span id="month_tips">0</span></p>
-                </section>
+                <div class="summary-row">
+                    <!-- Month Summary -->
+                    <section class="section summary_box">
+                        <h3>Summary</h3>
 
-                <!-- Bonuses -->
-                <section class="section bonuses_box">
-                    <h3>Bonuses</h3>
+                        <p>Hours: <span id="total_working_hours">0</span></p>
+                        <p>Orders: <span id="total_orders">0</span></p>
+                        <p>Tips: <span id="month_tips">0</span></p>
+                    </section>
 
-                    <p>Orders: <span id="bonus_per_order">0</span></p>
-                    <p>Washing: <span id="washing_bonus">0</span></p>
-                    <p>Phone: <span id="phone_usage_bonus">0</span></p>
-                </section>
+                    <!-- Bonuses -->
+                    <section class="section bonuses_box">
+                        <h3>Bonuses</h3>
+
+                        <p>Orders: <span id="bonus_per_order">0</span></p>
+                        <p>Washing: <span id="washing_bonus">0</span></p>
+                        <p>Phone: <span id="phone_usage_bonus">0</span></p>
+                    </section>
+                </div>
+
+                <!-- Final Result -->
+                <div class="ledge-tab-month">
+                    Total: <span id="month_final_amount">0</span>
+                    <span class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltiptext">Hourly + tips + bonuses (excl. car)</span>
+                    </span>
+                </div>
+
             </div>
 
             <!-- Car Summary -->
@@ -71,20 +84,18 @@
                 </div>
             </section>
 
-            <!-- Final Result -->
-            <div class="section total_block">
-                Total: <span id="month_final_amount">0</span>
-                <span class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltiptext">Includes: hourly income, tips, and all bonuses</span>
-                </span>
-            </div>
+
 
             <!-- Buttons -->
             <div type="button" class="button-row">
                 <button id="closeMonthButton" class="action-button close" 
                     aria-label="Close month report" title="Close month">
                     <i class="fa-solid fa-box-archive"></i>
+                </button>
+
+                <button id="goToToday" class="action-button toToday"
+                    aria-label="Go back to current day" title="Go to current day">
+                    <i class="fa-solid fa-calendar-day"></i>
                 </button>
             </div>
         </main>

@@ -10,7 +10,6 @@ import {
 
 import {
     parseNumeric,
-    calculateNetEarnings,
     getFullDayId,
     validateNumericInput,
     getSelectedDateFromURL,
@@ -26,6 +25,10 @@ import {
     setCalculatedValue,
     getCalculatedValue
 } from './shared/dom-utils.js';
+
+import {
+    calculateNetEarnings
+} from './shared/calculations.js';
 
 // ==============================
 // 📄 Day Summary Logic
@@ -87,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("🧪 netOrderEarnings =", netOrderEarnings);
 
         setCalculatedValue("net_order_earnings", netOrderEarnings);
-        setCalculatedValue("fuel_cost", fuelCost);
+        setCalculatedValue("fuel_cost", -fuelCost);
         setCalculatedValue("car_income", carIncome);
         setCalculatedValue("day_final_amount", finalAmount);
     }
@@ -218,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const day = parts[2];
         const monthName = new Date(selectedDate).toLocaleString('default', { month: 'long' });
 
-        const title = `Workday Report: ${day} ${monthName}`;
+        const title = `Report · ${day} ${monthName}`;
         const titleElement = document.getElementById("page-title");
         if (titleElement) titleElement.innerText = title;
     }

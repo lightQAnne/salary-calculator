@@ -56,6 +56,11 @@ body {
 
 .earnings_input {
     background-color: #e8f6ff;
+    position: relative;
+    z-index: 2;
+    border-radius: 20px;
+    padding: 16px;
+    margin: 8px 12px 0 12px;
 }
 
 .input-group {
@@ -163,17 +168,59 @@ input[type="number"]::-webkit-inner-spin-button {
     padding-top: 2px;
 }
 
-.total_block {
-  background-color: #f1f6e9;
-  border-radius: 15px;
-  padding: 10px 12px;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-align: center;
-  margin-top: 1.5rem;
-  color: #1e432e;
-  border: none;
-  text-shadow: 0 1px #fff;
+.ledge-wrapper-day {
+    position: relative;
+    margin-bottom: 2.5rem;
+    background: #f1f6e9;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    border-radius: 20px 20px 0 20px;
+}
+
+.ledge-tab-day {
+    position: absolute;
+    bottom: -27px;
+    right: 0.5px;
+    background-color: inherit;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1e432e;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    box-shadow: none;
+    z-index: 1;
+    border-radius: 0 0 15px 15px;
+}
+
+.ledge-wrapper-month {
+    position: relative;
+    margin-bottom: 2.5rem;
+    background: #f1f6e9;
+    padding: 10px 10px;
+    border-radius: 20px 20px 0 20px;
+    z-index: 0;
+}
+
+.ledge-tab-month {
+    overflow: visible;
+    position: absolute;
+    bottom: -27px;
+    right: 0.5px;
+    background-color: inherit;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1e432e;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    box-shadow: none;
+    z-index: 1;
+    border-radius: 0 0 15px 15px;
 }
 
 
@@ -205,8 +252,9 @@ input[type="number"]::-webkit-inner-spin-button {
     border-radius: 6px;
     padding: 6px 10px;
     position: absolute;
-    z-index: 10;
-    bottom: 120%; /* или 110% если обрезает */
+    z-index: 9999;
+    overflow: visible;
+    bottom: 120%;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
@@ -217,6 +265,8 @@ input[type="number"]::-webkit-inner-spin-button {
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
+    z-index: 9999;
+    overflow: visible;
 }
   
 /* ============ BUTTONS ============ */
@@ -307,6 +357,19 @@ input[type="number"]::-webkit-inner-spin-button {
     background-color: #f8bbd0;
     transform: scale(1.03);
     color: #333;
+}
+
+/* To Today */
+#goToToday {
+    background-color: #e2f4f1;
+    border-radius: 17px;
+    color: #2c5752;
+}
+
+#goToToday:hover {
+    background-color: #a6ded6;
+    transform: scale(1.03);
+    color: #0f3c39;
 }
 
 /* ============ CALENDAR ============ */
