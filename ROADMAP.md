@@ -112,3 +112,19 @@ A structured path for building and scaling a personal earnings & logistics track
 - 🚀 Up next: error handling, Profile Settings page
 
 🧠 *This roadmap evolves with every sprint.*
+
+🔄 Updates as of 2025-06-17
+✅ Completed This Sprint:
+Day Page:
+ Added input for daily fuel usage (l/100km)
+ Saved fuel consumption to both monthData and fuelHistory
+ Auto-filled last known consumption with tooltip (like fuel price)
+
+Month Page:
+ Archive button reflects month status (green if closed, icon changes)
+ UI logic for archive state moved to dom-utils.js
+ Bonus calculation logic modularized into calculations.js
+
+Shared Logic:
+ Removed deprecated DEFAULT_AVG_CONSUMPTION from config
+ Improved loadFuelPriceForDate() with safe check on entry.price
