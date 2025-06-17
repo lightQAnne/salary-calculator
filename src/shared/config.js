@@ -2,9 +2,6 @@
 // ⚙️ App Configuration Constants
 // ==============================
 
-// 🚗 Vehicle
-export const DEFAULT_AVG_CONSUMPTION = 7.0; // liters per 100km
-
 // 💰 Earnings
 export const ORDER_RATE = 5.5;              // income per order (PLN)
 export const DEFAULT_HOURLY_RATE = 30.5;    // default gross hourly rate (PLN)

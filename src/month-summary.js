@@ -3,12 +3,20 @@
 // ==============================
 
 import {
+  updateText,
+  updateCloseMonthButtonUI,
+  clearMonthSummaryUI 
+} from './shared/dom-utils.js';
+
+import {
   getCurrentMonthId
 } from './shared/utils.js';
 
 import {
   calculateNetEarnings,
-  getBonusLevel
+  getBonusLevel,
+  calculateBonuses,
+  calculateBonusPerOrder
 } from './shared/calculations.js';
 
 // ==============================
@@ -22,69 +30,23 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==============================
 
     const closeMonthButton = document.getElementById("closeMonthButton");
-    if (closeMonthButton) closeMonthButton.addEventListener("click", closeMonth);
+    const monthSelector = document.getElementById("monthSelector");
 
-    // ==============================
-    //  🧮 Bonus Calculation Logic
-    // ==============================
-
-    async function calculateBonusPerOrder(monthId) {
-        const prefix = `${monthId}-`;
-        const snapshot = await db.collection("monthData").get();
-
-        let monThuOrders = 0;
-        let friSunOrders = 0;
-
-        snapshot.docs.forEach(doc => {
-            if (doc.id.startsWith(prefix)) {
-                const data = doc.data();
-                const dayOfWeek = new Date(doc.id).getDay(); // 0=Sun, 1=Mon...
-                const orders = data.orders || 0;
-
-                if (dayOfWeek >= 1 && dayOfWeek <= 4) {
-                    monThuOrders += orders;
-                } else {
-                    friSunOrders += orders;
-                }
-            }
+    if (monthSelector) {
+        monthSelector.addEventListener("change", () => {
+            loadMonthSummary(monthSelector.value);
         });
-
-        const totalOrders = monThuOrders + friSunOrders;
-        const bonusLevel = getBonusLevel(totalOrders);
-
-        const monThuBonus = monThuOrders * bonusLevel.weekday;
-        const friSunBonus = friSunOrders * bonusLevel.weekend;
-        const totalBonus = +(monThuBonus + friSunBonus).toFixed(2);
-
-        console.log("📦 Bonus Order Breakdown:");
-        console.log(`➡️  Mon–Thu: ${monThuOrders} × ${bonusLevel.weekday} = ${monThuBonus}`);
-        console.log(`➡️  Fri–Sun: ${friSunOrders} × ${bonusLevel.weekend} = ${friSunBonus}`);
-        
-        return totalBonus;
     }
 
-    function calculateBonuses(summary) {
-        const hours = summary.totalWorkingHours || 0;
-        const bonusPerOrder = summary.bonusPerOrder || 0;
-        const laundryBonus = +(hours * 0.10).toFixed(2);
-        const phoneBonus = hours >= 40 ? 25.00 : +(hours * 0.62).toFixed(2);
-
-        return {
-        bonusPerOrder: calculateNetEarnings(bonusPerOrder),
-        laundryBonus: calculateNetEarnings(laundryBonus),
-        phoneBonus: calculateNetEarnings(phoneBonus)
-        };
-    }
+    if (closeMonthButton) closeMonthButton.addEventListener("click", closeMonth);
 
     // ==============================
     // 🔁 Firebase: Close Month
     // ==============================
 
     async function closeMonth() {
-        const selector = document.getElementById("monthSelector");
-        const monthId = selector?.value || getCurrentMonthId();
-
-        const monthRef = db.collection("monthSummary").doc(monthId);
+        const currentMonthId = monthSelector?.value || getCurrentMonthId();
+        const monthRef = db.collection("monthSummary").doc(currentMonthId);;
 
         try {
             const doc = await monthRef.get();
@@ -92,10 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const summary = doc.data();
             if (summary.closedAt) {
-                return alert("📦 This month has already been closed.");
+                alert("📦 This month has already been closed.");
+                return;
             }
 
-            const bonusPerOrder = await calculateBonusPerOrder(monthId);
+            const bonusPerOrder = await calculateBonusPerOrder(currentMonthId);
             const bonuses = calculateBonuses({ ...summary, bonusPerOrder });
 
             await monthRef.update({
@@ -104,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             alert("✅ Month closed and bonuses saved.");
-            loadMonthSummary();
+            loadMonthSummary(currentMonthId);
 
         } catch (err) {
             console.error("❌ Error closing month:", err);
@@ -124,15 +87,17 @@ document.addEventListener("DOMContentLoaded", () => {
     
         try {
             const doc = await monthRef.get();
-            if (!doc.exists) return;
+            if (doc.exists) {
+            updateCloseMonthButtonUI(!!doc.data().closedAt);
+            }
+
+            if (!doc.exists) {
+                clearMonthSummaryUI();
+                return;
+            }
     
             const summary = doc.data();
-    
-            const updateText = (id, value, unit = "") => {
-                const el = document.getElementById(id);
-                if (el) el.innerText = value + unit;
-            };
-    
+
             // 💡 Calculate or use saved bonuses
             let bonuses = {
                 bonusPerOrder: 0,

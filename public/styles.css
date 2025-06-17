@@ -362,6 +362,17 @@ input[type="number"]::-webkit-inner-spin-button {
     color: #333;
 }
 
+/* New styles for archived month */
+#closeMonthButton.archived {
+    background-color: #a7d9b9; /* Green color */
+    color: #042d17; /* Darker text for contrast */
+}
+
+#closeMonthButton.archived:hover {
+    background-color: #72c78e; /* Darker green on hover */
+    transform: scale(1.03);
+}
+
 /* To Today */
 #goToToday {
     background-color: #e2f4f1;

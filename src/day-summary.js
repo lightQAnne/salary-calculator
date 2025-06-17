@@ -3,7 +3,6 @@
 // ==============================
 
 import { 
-    DEFAULT_AVG_CONSUMPTION, 
     DEFAULT_HOURLY_RATE,
     ORDER_RATE
 } from './shared/config.js';
@@ -46,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tipsInput = document.getElementById("tips");
     const kmPerDayInput = document.getElementById("km_per_day");
     const fuelPriceInput = document.getElementById("fuel_price");
+    const fuelConsumptionInput = document.getElementById("daily_consumption");
     const saveButton = document.getElementById("saveButton");
     const clearButton = document.getElementById("clearButton");
 
@@ -79,7 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // car
         const fuelPrice = parseNumeric(fuelPriceInput.value);
-        const costPerKm = (fuelPrice * DEFAULT_AVG_CONSUMPTION) / 100;
+        const fuelConsumption = parseNumeric(fuelConsumptionInput.value);
+
+        const costPerKm = (fuelPrice * fuelConsumption) / 100;
         const fuelCost = kmPerDay * costPerKm;
 
         const carIncome = netOrderEarnings - fuelCost;
@@ -115,15 +117,17 @@ document.addEventListener("DOMContentLoaded", () => {
             workingHours = parseFloat(workingHoursRaw.replace(",", ".")) || 0;
         }
 
-
         workingHours = Math.max(workingHours, 0);
-    
+        const fuelPrice = parseNumeric(fuelPriceInput, null);
+        const fuelConsumption = parseNumeric(fuelConsumptionInput, null);
+        
         const dayData = {
             workingHours,
             orders: parseFloat(ordersCountInput.value) || 0,
             tips: parseFloat(tipsInput.value) || 0,
             fuelPrice: parseNumeric(fuelPriceInput),
             fuelCost: getCalculatedValue("fuel_cost"),
+            fuelConsumption: fuelConsumption,
             netOrderEarnings: getCalculatedValue("net_order_earnings"),
             carIncome: getCalculatedValue("car_income"),
             finalAmount: getCalculatedValue("day_final_amount"),
@@ -132,10 +136,13 @@ document.addEventListener("DOMContentLoaded", () => {
     
         try {
             await ensureMonthExists(monthId);
-            
-            const fuelPrice = parseNumeric(fuelPriceInput, null);
-            if (fuelPrice !== null) {
-                await db.collection("fuelHistory").doc(fullDayId).set({ price: fuelPrice });
+
+            if (fuelPrice !== null || fuelConsumption !== null) {
+                const fuelData = {};
+                if (fuelPrice !== null) fuelData.price = fuelPrice;
+                if (fuelConsumption !== null) fuelData.consumption = fuelConsumption;
+
+                await db.collection("fuelHistory").doc(fullDayId).set(fuelData);
             }
 
             await db.collection("monthData").doc(fullDayId).set(dayData);        
@@ -165,6 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 kmPerDayInput.value = data.kilometers || "";
                 tipsInput.value = data.tips || "";
                 fuelPriceInput.value = data.fuelPrice?.toFixed(2) || "";
+                fuelConsumptionInput.value = data.fuelConsumption?.toFixed(1) || "";
 
                 setCalculatedValue("net_order_earnings", data.netOrderEarnings || 0);
                 setCalculatedValue("fuel_cost", data.fuelCost || 0);
@@ -216,6 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedDate) {
         loadDayData(selectedDate);
         loadFuelPriceForDate(selectedDate);
+        loadFuelConsumptionForDate(selectedDate);
 
         const parts = selectedDate.split("-");
         const day = parts[2];
@@ -240,28 +249,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
         entries.sort((a, b) => b.date.localeCompare(a.date));
 
-            for (const entry of entries) {
-                if (entry.date <= dateStr) {
-                    const input = document.getElementById("fuel_price");
-                    if (input && !input.value) {
-                        input.value = entry.price.toFixed(2);
+        for (const entry of entries) {
+            if (entry.date <= dateStr && entry.price !== undefined) {
+                const input = document.getElementById("fuel_price");
+                if (input && !input.value) {
+                    input.value = entry.price.toFixed(2);
 
-                        const tooltip = document.getElementById("fuel_price_tooltip");
-                        const tooltipText = document.getElementById("fuel_price_tooltip_text");
+                    const tooltip = document.getElementById("fuel_price_tooltip");
+                    const tooltipText = document.getElementById("fuel_price_tooltip_text");
 
-                        if (tooltip && tooltipText) {
-                            const parsedDate = new Date(entry.date);
-                            const dateStr = parsedDate.toLocaleDateString('en-GB', {
-                                day: 'numeric',
-                                month: 'short'
-                            });
-                            tooltipText.innerHTML = `Price auto-filled from: <br> ${dateStr}`;
-                            tooltip.style.display = 'inline-block';
-                        }
+                    if (tooltip && tooltipText) {
+                        const parsedDate = new Date(entry.date);
+                        const dateStr = parsedDate.toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short'
+                        });
+                        tooltipText.innerHTML = `Price auto-filled from: <br> ${dateStr}`;
+                        tooltip.style.display = 'inline-block';
                     }
-                    break;
                 }
+                break;
             }
+        }
+    }
+
+    async function loadFuelConsumptionForDate(dateStr) {
+        if (!window.db || !dateStr) return;
+
+        const snapshot = await db.collection("monthData").get();
+        const entries = [];
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            if (doc.exists && data.fuelConsumption) {
+                entries.push({ date: doc.id, value: data.fuelConsumption });
+            }
+        });
+
+        entries.sort((a, b) => b.date.localeCompare(a.date));
+
+        for (const entry of entries) {
+            if (entry.date <= dateStr) {
+                const input = document.getElementById("daily_consumption");
+                if (input && !input.value) {
+                    input.value = entry.value.toFixed(1);
+
+                    const tooltip = document.getElementById("fuel_usage_tooltip");
+                    const tooltipText = document.getElementById("fuel_usage_tooltip_text");
+
+                    if (tooltip && tooltipText) {
+                        const parsedDate = new Date(entry.date);
+                        const dateStr = parsedDate.toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short'
+                        });
+                        tooltipText.innerHTML = `Auto-filled from:<br>${dateStr}`;
+                        tooltip.style.display = 'inline-block';
+                    }
+                }
+                break;
+            }
+        }
     }
 
     calculate();
